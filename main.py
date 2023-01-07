@@ -4,7 +4,7 @@ from PyQt5.QtCore import *
 from PyQt5.uic import loadUiType
 import Library_db
 from Styles.Login_style import *
-from currency import convert_currency, make_list
+from currency import convert_currency, convert_currency_update
 from export_excel import export_to_excel
 import getpass
 import sys
@@ -263,8 +263,7 @@ class Main_window(QMainWindow, main_ui):
 
         self.pushButton_54.clicked.connect(self.change_eachother)
         self.lineEdit_22.textChanged.connect(self.currency_convert)
-        self.pushButton_55.clicked.connect(self.currency_convert)
-        self.pushButton_55.clicked.connect(self.currency_convert)
+        self.pushButton_55.clicked.connect(self.currency_update)
         self.pushButton_47.clicked.connect(self.close)
 
         self.tabWidget_2.currentChanged.connect(self.left_sale_tab)
@@ -627,18 +626,39 @@ class Main_window(QMainWindow, main_ui):
             self.lineEdit_23.setText("")
         else:
             amount = float(amount)
-            dolar_to_tl = convert_currency()
+            # dolar_to_tl = convert_currency()
             try:
                 if one == "$":
                     self.label_30.clear()
-                    result = dolar_to_tl.see("USD", amount, "TRY")
+                    result = convert_currency("USD", amount, "TRY")
                     self.lineEdit_23.setText(str(result))
                 else:
                     self.label_30.clear()
-                    result = dolar_to_tl.see("TRY", amount, "USD")
+                    result = convert_currency("TRY", amount, "USD")
                     self.lineEdit_23.setText(str(result))
             except:
                 self.label_30.setText("كومپىيوتىز تورغا ئۇلىنالمىدى!")
+
+    def currency_update(self):
+        one = self.label_28.text()
+        amount = self.lineEdit_22.text()
+        if amount == "" or amount < "0":
+            self.lineEdit_23.setText("")
+        else:
+            amount = float(amount)
+            # dolar_to_tl = convert_currency()
+            try:
+                if one == "$":
+                    self.label_30.clear()
+                    result = convert_currency_update("USD", amount, "TRY")
+                    self.lineEdit_23.setText(str(result))
+                else:
+                    self.label_30.clear()
+                    result = convert_currency_update("TRY", amount, "USD")
+                    self.lineEdit_23.setText(str(result))
+            except:
+                self.label_30.setText("كومپىيوتىز تورغا ئۇلىنالمىدى!")
+
 
     def open_sale(self):
         if self.tabWidget.currentIndex() == 0:
