@@ -33,8 +33,10 @@ class starter(QWidget, ui):
 
     def initialize(self):
 
-        Library_db.cur.execute("CREATE TABLE IF NOT EXISTS Library.super_user(user_name char(75),"
-                               "user_password char(75), library_name char(255), PRIMARY KEY(user_name))")
+        Library_db.cur.execute(
+            "CREATE TABLE IF NOT EXISTS Library.super_user(user_name char(75),"
+            "user_password char(75), library_name char(255), PRIMARY KEY(user_name))"
+        )
         Library_db.db.commit()
 
         self.lineEdit.textChanged.connect(lambda: self.change_to_clear("0"))
@@ -131,8 +133,11 @@ class starter(QWidget, ui):
 
         else:
             if not self.lineEdit_3.text().isascii():
-                mb = message_close("پارول بەلگىلەش", " ئىناۋەتلىك بىر پارول بەلگىلەڭ!"
-                                                     "\nپارول ئىنگىلىزچە ھەرىپ، سان ۋە بەلگىلەردىن تۈزۈلىشى كىرەك!")
+                mb = message_close(
+                    "پارول بەلگىلەش",
+                    " ئىناۋەتلىك بىر پارول بەلگىلەڭ!"
+                    "\nپارول ئىنگىلىزچە ھەرىپ، سان ۋە بەلگىلەردىن تۈزۈلىشى كىرەك!",
+                )
 
                 x = self.geometry().x()
                 y = self.geometry().y()
@@ -148,8 +153,10 @@ class starter(QWidget, ui):
                 self.label_4.setText("پارول بىردەك ئەمەس!")
                 self.lineEdit_4.setFocus(True)
             else:
-                Library_db.cur.execute("INSERT INTO Library.super_user(user_name, user_password, library_name) "
-                                       f"VALUES('{super_user_name}','{super_user_pass}', '{library_name}')")
+                Library_db.cur.execute(
+                    "INSERT INTO Library.super_user(user_name, user_password, library_name) "
+                    f"VALUES('{super_user_name}','{super_user_pass}', '{library_name}')"
+                )
                 Library_db.db.commit()
                 self.close()
                 time.sleep(0.3)

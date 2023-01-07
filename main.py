@@ -1,4 +1,3 @@
-
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
@@ -13,21 +12,23 @@ import sys
 
 main_ui, _ = loadUiType("uis/main_app.ui")
 
-    # edit_client
+# edit_client
+
 
 class Main_window(QMainWindow, main_ui):
-
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.setWindowTitle("كۈتۈپخانا باشقۇرۇش سىستىمىسى")
+
+        Library_db.create_all_tables()
 
         self.edit_client_frame_flag = "yes"
         self.add_client_frame_flag = "yes"
         self.edit_user_frame_flag = "disable"
         self.category_list_widget_add_flag = "hide"
         self.category_list_widget_edit_flag = "hide"
-        self.theme_fl = 'off'
+        self.theme_fl = "off"
         self.re_press_flag = "no"
         self.lend_press_flag = "no"
         self.sale_button_flag = "no"
@@ -47,8 +48,9 @@ class Main_window(QMainWindow, main_ui):
         close_button = QPushButton()
         close_button.resize(80, 30)
         close_button.setText("ئتىش")
-        close_button.setStyleSheet("background-color: rgb(15, 128, 255);border-radius:5px;")
-
+        close_button.setStyleSheet(
+            "background-color: rgb(15, 128, 255);border-radius:5px;"
+        )
 
         self.edit_line_for_author_add = QLineEdit(self)
         self.edit_line_for_author_edit = QLineEdit(self)
@@ -58,11 +60,16 @@ class Main_window(QMainWindow, main_ui):
         self.list_widget_for_client_edit = QListWidget()
 
         self.edit_line_for_author_add.setPlaceholderText("ئاپتۇر تاللاڭ ياكى كىرگۈزۈڭ!")
-        self.edit_line_for_publisher_add.setPlaceholderText("نەشىريات تاللاڭ ياكى كىرگۈزۈڭ!")
+        self.edit_line_for_publisher_add.setPlaceholderText(
+            "نەشىريات تاللاڭ ياكى كىرگۈزۈڭ!"
+        )
 
-        self.edit_line_for_author_edit.setPlaceholderText("ئاپتۇر تاللاڭ ياكى كىرگۈزۈڭ!")
-        self.edit_line_for_publisher_edit.setPlaceholderText("نەشىريات تاللاڭ ياكى كىرگۈزۈڭ!")
-
+        self.edit_line_for_author_edit.setPlaceholderText(
+            "ئاپتۇر تاللاڭ ياكى كىرگۈزۈڭ!"
+        )
+        self.edit_line_for_publisher_edit.setPlaceholderText(
+            "نەشىريات تاللاڭ ياكى كىرگۈزۈڭ!"
+        )
 
         self.old_book_name_for_change = ""
 
@@ -71,7 +78,6 @@ class Main_window(QMainWindow, main_ui):
         self.current_year = self.now.toString("yyyy")
 
         self.spinBox.setAttribute(Qt.WA_MacShowFocusRect, False)
-
 
         self.initialize()
         self.handle_buttons()
@@ -248,8 +254,6 @@ class Main_window(QMainWindow, main_ui):
         quit.triggered.connect(self.close)
         quit.setShortcut("ctrl+w")
 
-
-
         # ================= themes tab =================
         self.open_themes()
 
@@ -279,7 +283,9 @@ class Main_window(QMainWindow, main_ui):
         self.pushButton_46.clicked.connect(lambda: self.setting_tab_control("46"))
         self.pushButton_23.clicked.connect(self.add_category_to_database)
         self.pushButton_32.clicked.connect(self.category_delete)
-        self.pushButton_31.clicked.connect(lambda: self.category_change_save("category"))
+        self.pushButton_31.clicked.connect(
+            lambda: self.category_change_save("category")
+        )
         self.tableWidget_7.itemClicked.connect(self.category_edit_item_click)
         self.pushButton_37.clicked.connect(self.clear_edit_line_category)
 
@@ -293,7 +299,9 @@ class Main_window(QMainWindow, main_ui):
         # publisher
         self.pushButton_25.clicked.connect(self.add_publisher_to_database)
         self.pushButton_36.clicked.connect(lambda: self.publisher_delete("publisher"))
-        self.pushButton_35.clicked.connect(lambda: self.publisher_change_save("publisher"))
+        self.pushButton_35.clicked.connect(
+            lambda: self.publisher_change_save("publisher")
+        )
         self.tableWidget_9.itemClicked.connect(self.publisher_edit_item_click)
         self.pushButton_39.clicked.connect(self.clear_edit_line_publisher)
 
@@ -346,7 +354,6 @@ class Main_window(QMainWindow, main_ui):
         self.listWidget_3.clicked.connect(self.select_client_for_edit)
         self.lineEdit_15.textChanged.connect(self.search_clients_for_view)
 
-
         self.pushButton_52.clicked.connect(self.delete_client)
         self.pushButton_53.clicked.connect(self.change_client)
         self.pushButton_58.clicked.connect(self.clear_client_edit)
@@ -355,8 +362,12 @@ class Main_window(QMainWindow, main_ui):
 
         # ======================== books tab ==================================
 
-        self.lineEdit_57.editingFinished.connect(self.focus_left_form_add_category_select)
-        self.lineEdit_56.editingFinished.connect(self.focus_left_form_edit_category_select)
+        self.lineEdit_57.editingFinished.connect(
+            self.focus_left_form_add_category_select
+        )
+        self.lineEdit_56.editingFinished.connect(
+            self.focus_left_form_edit_category_select
+        )
         self.pushButton_142.clicked.connect(self.cancel_add_book)
         self.pushButton_10.clicked.connect(self.add_books)
         self.lineEdit_57.textChanged.connect(self.search_category)
@@ -381,16 +392,28 @@ class Main_window(QMainWindow, main_ui):
         self.pushButton_17.clicked.connect(self.search_for_view)
         self.listWidget_6.setVisible(False)
         self.pushButton_12.clicked.connect(self.search_for_edit)
-        self.listWidget_5.itemClicked.connect(lambda: self.book_name_click_for_edit(self.listWidget_5.currentItem().text()))
+        self.listWidget_5.itemClicked.connect(
+            lambda: self.book_name_click_for_edit(
+                self.listWidget_5.currentItem().text()
+            )
+        )
         self.pushButton_15.clicked.connect(self.book_up_date_changes)
 
         self.pushButton_7.clicked.connect(self.sale_book)
 
-        self.radioButton.toggled.connect(self.search_book_tab_radio_button_check_changes)
-        self.radioButton_2.toggled.connect(self.search_book_tab_radio_button_check_changes)
+        self.radioButton.toggled.connect(
+            self.search_book_tab_radio_button_check_changes
+        )
+        self.radioButton_2.toggled.connect(
+            self.search_book_tab_radio_button_check_changes
+        )
 
-        self.radioButton_4.toggled.connect(self.edit_book_tab_radio_button_check_changes)
-        self.radioButton_5.toggled.connect(self.edit_book_tab_radio_button_check_changes)
+        self.radioButton_4.toggled.connect(
+            self.edit_book_tab_radio_button_check_changes
+        )
+        self.radioButton_5.toggled.connect(
+            self.edit_book_tab_radio_button_check_changes
+        )
 
     # ======================== Functions =======================
 
@@ -402,8 +425,13 @@ class Main_window(QMainWindow, main_ui):
         user_name = getpass.getuser()
         data = self.now.toString("dd-MM-yyyy")
 
-        file = QFileDialog.getSaveFileName(self, "export excel", f"/Users/{user_name}/Desktop/{data}", "Excel (.xls)",
-                                           options = option)
+        file = QFileDialog.getSaveFileName(
+            self,
+            "export excel",
+            f"/Users/{user_name}/Desktop/{data}",
+            "Excel (.xls)",
+            options=option,
+        )
 
         if file[0] == "":
             pass
@@ -439,10 +467,11 @@ class Main_window(QMainWindow, main_ui):
             data = [names[0] for names in data]
             self.combobox_for_users.addItems(data)
 
-
         self.change_manager_in_put_box = QLineEdit(self.dialog)
         self.change_manager_in_put_box.setGeometry(20, 90, 260, 31)
-        self.change_manager_in_put_box.setStyleSheet("border-radius:4px; padding-right:32px; padding-left:2px;")
+        self.change_manager_in_put_box.setStyleSheet(
+            "border-radius:4px; padding-right:32px; padding-left:2px;"
+        )
         self.change_manager_in_put_box.setEchoMode(2)
         self.change_manager_in_put_box.setAttribute(Qt.WA_MacShowFocusRect, False)
         self.change_manager_in_put_box.setFont(font)
@@ -450,8 +479,12 @@ class Main_window(QMainWindow, main_ui):
         self.pushbutton_for_change_manager_pass = QPushButton(self.dialog)
         use_black = QIcon(QPixmap(":/login/icons/Password-hide-black.svg"))
         self.pushbutton_for_change_manager_pass.setStyleSheet("background:transparent;")
-        self.pushbutton_for_change_manager_pass.pressed.connect(self.change_manager_show_pressed)
-        self.pushbutton_for_change_manager_pass.released.connect(self.change_manager_show_released)
+        self.pushbutton_for_change_manager_pass.pressed.connect(
+            self.change_manager_show_pressed
+        )
+        self.pushbutton_for_change_manager_pass.released.connect(
+            self.change_manager_show_released
+        )
         self.pushbutton_for_change_manager_pass.setGeometry(235, 81, 50, 50)
         size = QSize(22, 22)
         self.pushbutton_for_change_manager_pass.setIconSize(size)
@@ -460,14 +493,19 @@ class Main_window(QMainWindow, main_ui):
         self.manager_change_button = QPushButton("مۇقۇملاش", self.dialog)
         self.manager_change_button.setFont(self.my_font)
         self.manager_change_button.setStyleSheet(
-            "background-color: rgb(15, 128, 255);border-radius:5px; color: white;")
+            "background-color: rgb(15, 128, 255);border-radius:5px; color: white;"
+        )
         self.manager_change_button.pressed.connect(self.change_manager_confirm_pressed)
-        self.manager_change_button.released.connect(self.change_manager_confirm_released)
+        self.manager_change_button.released.connect(
+            self.change_manager_confirm_released
+        )
         self.manager_change_button.setGeometry(153, 143, 120, 34)
 
         self.manager_change_cancel = QPushButton("ئىتىش", self.dialog)
         self.manager_change_cancel.setFont(self.my_font)
-        self.manager_change_cancel.setStyleSheet("background-color:rgb(255, 255, 255);border-radius:5px;")
+        self.manager_change_cancel.setStyleSheet(
+            "background-color:rgb(255, 255, 255);border-radius:5px;"
+        )
         self.manager_change_cancel.pressed.connect(self.manager_change_cancel_pressed)
         self.manager_change_cancel.released.connect(self.manager_change_cancel_released)
         self.manager_change_cancel.setGeometry(28, 143, 120, 34)
@@ -475,11 +513,12 @@ class Main_window(QMainWindow, main_ui):
         if self.super_user_pass_ok == "no":
             self.checkBox.setChecked(False)
 
-
     def change_manager_confirm_pressed(self):
-        self.manager_change_button.setStyleSheet("padding-top:2px; padding-left: 2px;"
-                                                  "background-color: rgb(34, 101, 201);border-radius:5px; "
-                                                  "color: white;")
+        self.manager_change_button.setStyleSheet(
+            "padding-top:2px; padding-left: 2px;"
+            "background-color: rgb(34, 101, 201);border-radius:5px; "
+            "color: white;"
+        )
 
         pass_word = self.change_manager_in_put_box.text()
         if pass_word == "" or pass_word.isspace():
@@ -487,7 +526,9 @@ class Main_window(QMainWindow, main_ui):
         else:
             name = self.combobox_for_users.currentText()
             pass_word_entered = self.change_manager_in_put_box.text()
-            Library_db.cur.execute(f"SELECT user_password FROM Library.super_user WHERE(user_name = '{name}')")
+            Library_db.cur.execute(
+                f"SELECT user_password FROM Library.super_user WHERE(user_name = '{name}')"
+            )
             pass_word = Library_db.cur.fetchone()
             if pass_word:
                 pass_word = pass_word[0]
@@ -495,8 +536,10 @@ class Main_window(QMainWindow, main_ui):
                     Library_db.cur.execute("SELECT user_name FROM Library.current_user")
                     current_user = Library_db.cur.fetchone()
                     current_user = current_user[0]
-                    Library_db.cur.execute(f"UPDATE Library.current_user SET user_name = '{name}' "
-                                           f"WHERE(user_name = '{current_user}')")
+                    Library_db.cur.execute(
+                        f"UPDATE Library.current_user SET user_name = '{name}' "
+                        f"WHERE(user_name = '{current_user}')"
+                    )
                     Library_db.db.commit()
                     self.dialog.close()
 
@@ -505,16 +548,22 @@ class Main_window(QMainWindow, main_ui):
                 else:
                     self.message_close("باشقۇرغۇچى ئۆزگەرتىش", "پارول خاتا!")
             else:
-                Library_db.cur.execute(f"SELECT password FROM Library.users WHERE(user_name = '{name}')")
+                Library_db.cur.execute(
+                    f"SELECT password FROM Library.users WHERE(user_name = '{name}')"
+                )
                 pass_word = Library_db.cur.fetchone()
                 if pass_word:
                     pass_word = pass_word[0]
                     if pass_word_entered == pass_word:
-                        Library_db.cur.execute("SELECT user_name FROM Library.current_user")
+                        Library_db.cur.execute(
+                            "SELECT user_name FROM Library.current_user"
+                        )
                         current_user = Library_db.cur.fetchone()
                         current_user = current_user[0]
-                        Library_db.cur.execute(f"UPDATE Library.current_user SET user_name = '{name}' "
-                                               f"WHERE(user_name = '{current_user}')")
+                        Library_db.cur.execute(
+                            f"UPDATE Library.current_user SET user_name = '{name}' "
+                            f"WHERE(user_name = '{current_user}')"
+                        )
                         Library_db.db.commit()
                         self.dialog.close()
 
@@ -523,25 +572,26 @@ class Main_window(QMainWindow, main_ui):
                     else:
                         self.message_close("باشقۇرغۇچى ئۆزگەرتىش", "پارول خاتا!")
 
-
     def change_manager_confirm_released(self):
-        self.manager_change_button.setStyleSheet("background-color: rgb(15, 128, 255);border-radius:5px; "
-                                                  "color: white;")
+        self.manager_change_button.setStyleSheet(
+            "background-color: rgb(15, 128, 255);border-radius:5px; " "color: white;"
+        )
 
     def manager_change_cancel_pressed(self):
-        self.manager_change_cancel.setStyleSheet("background-color: rgb(15, 128, 255);border-radius:5px; "
-                                                 "color: white;")
+        self.manager_change_cancel.setStyleSheet(
+            "background-color: rgb(15, 128, 255);border-radius:5px; " "color: white;"
+        )
 
     def manager_change_cancel_released(self):
         self.dialog.close()
-
 
     def change_manager_show_pressed(self):
         self.change_manager_in_put_box.setEchoMode(0)
         use_black = QIcon(QPixmap(":/login/icons/Password-show-black.svg"))
         self.pushbutton_for_change_manager_pass.setIcon(use_black)
-        self.pushbutton_for_change_manager_pass.setStyleSheet("padding-top:2px; padding-left: 2px;"
-                                                          "background:transparent;")
+        self.pushbutton_for_change_manager_pass.setStyleSheet(
+            "padding-top:2px; padding-left: 2px;" "background:transparent;"
+        )
 
     def change_manager_show_released(self):
         self.change_manager_in_put_box.setEchoMode(2)
@@ -549,14 +599,19 @@ class Main_window(QMainWindow, main_ui):
         self.pushbutton_for_change_manager_pass.setIcon(use_black)
         self.pushbutton_for_change_manager_pass.setStyleSheet("background:transparent;")
 
-#===========================================================================================
+    # ===========================================================================================
 
     def get_current_manager(self):
         Library_db.cur.execute("SELECT user_name FROM Library.current_user")
         current_manager = Library_db.cur.fetchone()
-        current_manager = current_manager[0]
-        return current_manager
-
+        if current_manager:
+            current_manager = current_manager[0]
+            return current_manager
+        else:
+            Library_db.cur.execute("SELECT user_name FROM Library.super_user")
+            current_manager = Library_db.cur.fetchone()
+            current_manager = current_manager[0]
+            return current_manager
 
     def change_eachother(self):
         one = self.label_28.text()
@@ -564,7 +619,7 @@ class Main_window(QMainWindow, main_ui):
         self.label_28.setText(two)
         self.label_29.setText(one)
         self.currency_convert()
-    
+
     def currency_convert(self):
         one = self.label_28.text()
         amount = self.lineEdit_22.text()
@@ -576,15 +631,14 @@ class Main_window(QMainWindow, main_ui):
             try:
                 if one == "$":
                     self.label_30.clear()
-                    result =  dolar_to_tl.see("USD", amount, "TRY")
+                    result = dolar_to_tl.see("USD", amount, "TRY")
                     self.lineEdit_23.setText(str(result))
                 else:
                     self.label_30.clear()
-                    result =  dolar_to_tl.see("TRY", amount, "USD")
+                    result = dolar_to_tl.see("TRY", amount, "USD")
                     self.lineEdit_23.setText(str(result))
             except:
                 self.label_30.setText("كومپىيوتىز تورغا ئۇلىنالمىدى!")
-
 
     def open_sale(self):
         if self.tabWidget.currentIndex() == 0:
@@ -615,7 +669,6 @@ class Main_window(QMainWindow, main_ui):
         self.tabWidget.setCurrentIndex(0)
         self.radioButton_8.setChecked(True)
         self.open_sale_tab()
-
 
     def open_sale_tab(self):
 
@@ -682,7 +735,6 @@ class Main_window(QMainWindow, main_ui):
         self.edit_line_for_author_add.clear()
         self.edit_line_for_publisher_add.clear()
 
-
     def open_client(self):
         if self.tabWidget.currentIndex() == 2:
             return
@@ -711,7 +763,6 @@ class Main_window(QMainWindow, main_ui):
                 self.leave_edit_user()
 
         self.tabWidget.setCurrentIndex(2)
-
 
     def open_user(self):
         if self.tabWidget.currentIndex() == 3:
@@ -750,7 +801,6 @@ class Main_window(QMainWindow, main_ui):
         self.user_tab_control("26")
         self.clear_add_user()
 
-
     def open_settings(self):
         if self.tabWidget.currentIndex() == 4:
             return
@@ -788,7 +838,6 @@ class Main_window(QMainWindow, main_ui):
         self.tabWidget.setCurrentIndex(4)
         self.setting_tab_control("44")
 
-
     def open_themes(self):
 
         if self.edit_user_frame_flag == "enable":
@@ -797,22 +846,22 @@ class Main_window(QMainWindow, main_ui):
         elif self.edit_client_frame_flag == "no":
             self.leave_edit_client()
             if self.edit_client_frame_flag == "yes":
-                if self.theme_fl == 'on':
+                if self.theme_fl == "on":
                     self.groupBox_33.show()
-                    self.theme_fl = 'off'
+                    self.theme_fl = "off"
 
-                elif self.theme_fl == 'off':
+                elif self.theme_fl == "off":
                     self.groupBox_33.hide()
-                    self.theme_fl = 'on'
+                    self.theme_fl = "on"
 
         else:
-            if self.theme_fl == 'on':
+            if self.theme_fl == "on":
                 self.groupBox_33.show()
-                self.theme_fl = 'off'
+                self.theme_fl = "off"
 
-            elif self.theme_fl == 'off':
+            elif self.theme_fl == "off":
                 self.groupBox_33.hide()
-                self.theme_fl = 'on'
+                self.theme_fl = "on"
 
     # ---------------- category -------------------------------------
     # add category to database
@@ -820,7 +869,9 @@ class Main_window(QMainWindow, main_ui):
     def add_category_to_database(self):
         category_name = self.lineEdit_32.text()
         value_list = [category_name]
-        result = Library_db.add_info_one_column_table("category", value_list, category_name, "category_name")
+        result = Library_db.add_info_one_column_table(
+            "category", value_list, category_name, "category_name"
+        )
         if result == "empty":
             self.message_close("كىتاپ تۈرى قوشوش", "كىتاپ تۈرىنى كىرگۈزۈڭ!")
             self.lineEdit_32.clear()
@@ -898,19 +949,27 @@ class Main_window(QMainWindow, main_ui):
         old_name = self.lineEdit_51.text()
         new_name = self.lineEdit_58.text()
         if old_name == "":
-            self.message_close("كىتاپ تۈرى ئۆزگەرتىش", "ئالدى بىلەن بىر كىتاپ تۈرى تاللاڭ!")
+            self.message_close(
+                "كىتاپ تۈرى ئۆزگەرتىش", "ئالدى بىلەن بىر كىتاپ تۈرى تاللاڭ!"
+            )
         else:
             if new_name == "" or new_name.isspace():
                 self.message_close("كىتاپ تۈرى قوشوش", "يېڭى كىتاپ تۈرىنى كىرگۈزۈڭ!")
                 self.lineEdit_58.clear()
             else:
-                self.statusBar.showMessage(f"'{old_name}' was changed to '{new_name}'", 4000)
-                data = Library_db.search_from_column(f"{table_name}", "category_name", old_name)
+                self.statusBar.showMessage(
+                    f"'{old_name}' was changed to '{new_name}'", 4000
+                )
+                data = Library_db.search_from_column(
+                    f"{table_name}", "category_name", old_name
+                )
                 category_id = [category_id[1] for category_id in data]
                 for id_s in category_id:
-                    Library_db.cur.execute("UPDATE Library.category"
-                                           f" SET category_name = '{new_name}'"
-                                           f"WHERE(category_id = {id_s})")
+                    Library_db.cur.execute(
+                        "UPDATE Library.category"
+                        f" SET category_name = '{new_name}'"
+                        f"WHERE(category_id = {id_s})"
+                    )
                     Library_db.db.commit()
 
                 self.add_category_to_view_and_edit("category")
@@ -926,7 +985,9 @@ class Main_window(QMainWindow, main_ui):
     def category_delete(self):
         text = self.lineEdit_51.text()
         if text == "":
-            self.message_close("كىتاپ تۈرى ئۆزگەرتىش", "ئالدى بىلەن بىر كىتاپ تۈرىنى تاللاڭ!")
+            self.message_close(
+                "كىتاپ تۈرى ئۆزگەرتىش", "ئالدى بىلەن بىر كىتاپ تۈرىنى تاللاڭ!"
+            )
         else:
             msg = QMessageBox()
             msg.setWindowTitle("كىتاپ تۈرى ئۆزگەرتىش")
@@ -948,8 +1009,9 @@ class Main_window(QMainWindow, main_ui):
             data = Library_db.search_from_column("category", "category_name", text)
             category_id = [category_id[1] for category_id in data]
             for id_s in category_id:
-                Library_db.cur.execute("DELETE FROM Library.category"
-                                       f" WHERE(category_id = {id_s})")
+                Library_db.cur.execute(
+                    "DELETE FROM Library.category" f" WHERE(category_id = {id_s})"
+                )
                 Library_db.db.commit()
                 self.lineEdit_51.clear()
                 self.lineEdit_58.clear()
@@ -966,10 +1028,11 @@ class Main_window(QMainWindow, main_ui):
         self.lineEdit_58.clear()
         self.lineEdit_50.clear()
 
-
     def search_category_for_view(self):
         content = self.lineEdit_50.text()
-        data = Library_db.search_from_column_like("category", "category_name", "category_name", content)
+        data = Library_db.search_from_column_like(
+            "category", "category_name", "category_name", content
+        )
         column_names_list = ["كىتاپ تۈرى"]
         if data:
             self.tableWidget_7.setRowCount(len(data))
@@ -994,17 +1057,25 @@ class Main_window(QMainWindow, main_ui):
             self.message_close("ئاپتۇر ئۆزگەرتىش", "ئاپتۇر ئىسمىنى كىرگۈزۈڭ!")
             self.lineEdit_45.clear()
         else:
-            Library_db.cur.execute(f"SELECT author_name FROM Library.author "
-                                   f"WHERE(author_name = '{author_name}')")
+            Library_db.cur.execute(
+                f"SELECT author_name FROM Library.author "
+                f"WHERE(author_name = '{author_name}')"
+            )
             result = Library_db.cur.fetchall()
             if result:
-                self.message_close("ئاپتۇر ئۆزگەرتىش", "ئاپتۇر ئىسمى ئاللىقاچان قوشۇلۇپ بولغان!")
+                self.message_close(
+                    "ئاپتۇر ئۆزگەرتىش", "ئاپتۇر ئىسمى ئاللىقاچان قوشۇلۇپ بولغان!"
+                )
             else:
-                Library_db.cur.execute(f"INSERT INTO Library.author(author_name)VALUES('{author_name}')")
+                Library_db.cur.execute(
+                    f"INSERT INTO Library.author(author_name)VALUES('{author_name}')"
+                )
                 Library_db.db.commit()
                 self.add_author_to_view_and_edit("author")
                 self.add_author_to_combo("author")
-                self.statusBar.showMessage(f"ئاپتۇر ئىسمى '{author_name}' قوشۇلدى", 4000)
+                self.statusBar.showMessage(
+                    f"ئاپتۇر ئىسمى '{author_name}' قوشۇلدى", 4000
+                )
                 self.lineEdit_45.clear()
 
     # ----------------------------------------------------------------
@@ -1071,7 +1142,9 @@ class Main_window(QMainWindow, main_ui):
         old_name = self.lineEdit_53.text()
         new_name = self.lineEdit_59.text()
         if old_name == "":
-            self.message_close("ئاپتۇر ئۆزگەرتىش", "ئالدى بىلەن بىر ئاپتۇر ئىسمىنى تاللاڭ!")
+            self.message_close(
+                "ئاپتۇر ئۆزگەرتىش", "ئالدى بىلەن بىر ئاپتۇر ئىسمىنى تاللاڭ!"
+            )
         elif new_name == "" or new_name.isspace():
             self.message_close("ئاپتۇر ئۆزگەرتىش", "يېڭى ئاپتۇر ئىسمىنى كىرگۈزۈڭ!")
             self.lineEdit_59.clear()
@@ -1079,10 +1152,14 @@ class Main_window(QMainWindow, main_ui):
             data = Library_db.search_from_column(table_name, "author_name", old_name)
             author_id = [author_id[1] for author_id in data]
             for id_s in author_id:
-                Library_db.cur.execute(f"UPDATE Library.author SET author_name = '{new_name}' "
-                                       f"WHERE(author_id = {id_s})")
+                Library_db.cur.execute(
+                    f"UPDATE Library.author SET author_name = '{new_name}' "
+                    f"WHERE(author_id = {id_s})"
+                )
                 Library_db.db.commit()
-            self.statusBar.showMessage(f"كونا ئىسىم '{old_name}' يېڭى ئىسىم '{new_name}'غا ئۆزگەرتىلدى! ", 4000)
+            self.statusBar.showMessage(
+                f"كونا ئىسىم '{old_name}' يېڭى ئىسىم '{new_name}'غا ئۆزگەرتىلدى! ", 4000
+            )
             self.add_author_to_view_and_edit("author")
             self.add_author_to_combo("author")
 
@@ -1096,7 +1173,9 @@ class Main_window(QMainWindow, main_ui):
     def author_delete(self, table_name):
         text = self.lineEdit_53.text()
         if text == "":
-            self.message_close("ئاپتۇر ئۆزگەرتىش", "ئالدى بىلەن بىر ئاپتۇر ئىسمىنى تاللاڭ!")
+            self.message_close(
+                "ئاپتۇر ئۆزگەرتىش", "ئالدى بىلەن بىر ئاپتۇر ئىسمىنى تاللاڭ!"
+            )
         else:
             msg = QMessageBox()
             msg.setWindowTitle("ئاپتۇر ئۆزگەرتىش")
@@ -1111,7 +1190,6 @@ class Main_window(QMainWindow, main_ui):
             msg.buttonClicked.connect(self.author_delete_confirm)
             msg.exec_()
 
-
     def author_delete_confirm(self, i):
         confirm_text = i.text()
         if confirm_text == "ھەئە":
@@ -1119,8 +1197,9 @@ class Main_window(QMainWindow, main_ui):
             data = Library_db.search_from_column("author", "author_name", text)
             category_id = [category_id[1] for category_id in data]
             for id_s in category_id:
-                Library_db.cur.execute("DELETE FROM Library.author"
-                                       f" WHERE(author_id = {id_s})")
+                Library_db.cur.execute(
+                    "DELETE FROM Library.author" f" WHERE(author_id = {id_s})"
+                )
                 Library_db.db.commit()
                 self.statusBar.showMessage(f"'{text}' was deleted from author", 4000)
                 self.add_author_to_view_and_edit("author")
@@ -1139,7 +1218,9 @@ class Main_window(QMainWindow, main_ui):
 
     def search_author_for_view(self):
         content = self.lineEdit_52.text()
-        data = Library_db.search_from_column_like("author", "author_name", "author_name", content)
+        data = Library_db.search_from_column_like(
+            "author", "author_name", "author_name", content
+        )
         column_names_list = ["ئاپتۇر ئىسىملىرى"]
         if data:
             self.tableWidget_8.setRowCount(len(data))
@@ -1164,17 +1245,25 @@ class Main_window(QMainWindow, main_ui):
             self.message_close("نەشىريات قوشوش", "بىر نەشىريات ئىسمى كىرگۈزۈڭ!")
             self.lineEdit_46.clear()
         else:
-            Library_db.cur.execute(f"SELECT publisher_name FROM Library.publisher "
-                                   f"WHERE(publisher_name = '{publisher_name}')")
+            Library_db.cur.execute(
+                f"SELECT publisher_name FROM Library.publisher "
+                f"WHERE(publisher_name = '{publisher_name}')"
+            )
             result = Library_db.cur.fetchall()
             if result:
-                self.message_close("نەشىريات قوشوش", "بۇ نەشىريات ئىسمى ئاللىقاچان قوشولۇپ بولغان!")
+                self.message_close(
+                    "نەشىريات قوشوش", "بۇ نەشىريات ئىسمى ئاللىقاچان قوشولۇپ بولغان!"
+                )
             else:
-                Library_db.cur.execute(f"INSERT INTO Library.publisher(publisher_name)VALUES('{publisher_name}')")
+                Library_db.cur.execute(
+                    f"INSERT INTO Library.publisher(publisher_name)VALUES('{publisher_name}')"
+                )
                 Library_db.db.commit()
                 self.add_publisher_to_view_and_edit("publisher")
                 self.add_publisher_to_combo("publisher")
-                self.statusBar.showMessage(f"نەشىريات ئىسمى'{publisher_name}' قوشولۇپ بولدى", 4000)
+                self.statusBar.showMessage(
+                    f"نەشىريات ئىسمى'{publisher_name}' قوشولۇپ بولدى", 4000
+                )
                 self.lineEdit_46.clear()
 
     # ----------------------------------------------------------------
@@ -1241,7 +1330,9 @@ class Main_window(QMainWindow, main_ui):
         old_name = self.lineEdit_55.text()
         new_name = self.lineEdit_60.text()
         if old_name == "":
-            self.message_close("نەشىريات ئۆزگەرتىش", "ئالدى بىلەن بىر نەشىريات ئىسمىنى تاللاڭ!")
+            self.message_close(
+                "نەشىريات ئۆزگەرتىش", "ئالدى بىلەن بىر نەشىريات ئىسمىنى تاللاڭ!"
+            )
         elif new_name == "":
             self.message_close("نەشىريات ئۆزگەرتىش", "يېڭى نەشىريات ئىسمىنى كىرگۈزۈڭ!")
             self.lineEdit_60.clear()
@@ -1251,10 +1342,14 @@ class Main_window(QMainWindow, main_ui):
             data = Library_db.search_from_column(table_name, "publisher_name", old_name)
             publisher_id = [publisher_id[1] for publisher_id in data]
             for id_s in publisher_id:
-                Library_db.cur.execute(f"UPDATE Library.publisher SET publisher_name = '{new_name}' "
-                                       f"WHERE(publisher_id = {id_s})")
+                Library_db.cur.execute(
+                    f"UPDATE Library.publisher SET publisher_name = '{new_name}' "
+                    f"WHERE(publisher_id = {id_s})"
+                )
                 Library_db.db.commit()
-            self.statusBar.showMessage(f"'{old_name}' was changed to '{new_name}'", 4000)
+            self.statusBar.showMessage(
+                f"'{old_name}' was changed to '{new_name}'", 4000
+            )
             self.add_publisher_to_view_and_edit("publisher")
             self.add_publisher_to_combo("publisher")
 
@@ -1268,7 +1363,9 @@ class Main_window(QMainWindow, main_ui):
     def publisher_delete(self, table_name):
         text = self.lineEdit_55.text()
         if text == "":
-            self.message_close("نەشىريات ئۆزگەرتىش", "ئالدى بىلەن بىر نەشىريات ئىسمىنى تاللاڭ!")
+            self.message_close(
+                "نەشىريات ئۆزگەرتىش", "ئالدى بىلەن بىر نەشىريات ئىسمىنى تاللاڭ!"
+            )
         else:
             msg = QMessageBox()
             msg.setWindowTitle("نەشىريات ئۆزگەرتىش")
@@ -1290,8 +1387,9 @@ class Main_window(QMainWindow, main_ui):
             data = Library_db.search_from_column("publisher", "publisher_name", text)
             publisher_id = [publisher_id[1] for publisher_id in data]
             for id_s in publisher_id:
-                Library_db.cur.execute("DELETE FROM Library.publisher"
-                                       f" WHERE(publisher_id = {id_s})")
+                Library_db.cur.execute(
+                    "DELETE FROM Library.publisher" f" WHERE(publisher_id = {id_s})"
+                )
                 Library_db.db.commit()
                 self.statusBar.showMessage(f"'{text}' was deleted from publisher", 4000)
                 self.add_publisher_to_view_and_edit("publisher")
@@ -1311,7 +1409,9 @@ class Main_window(QMainWindow, main_ui):
 
     def search_publisher_for_view(self):
         content = self.lineEdit_52.text()
-        data = Library_db.search_from_column_like("publisher", "publisher_name", "publisher_name", content)
+        data = Library_db.search_from_column_like(
+            "publisher", "publisher_name", "publisher_name", content
+        )
         column_names_list = ["نەشىريات ئىسىملىرى"]
         if data:
             self.tableWidget_9.setRowCount(len(data))
@@ -1326,7 +1426,6 @@ class Main_window(QMainWindow, main_ui):
             self.tableWidget_9.setColumnWidth(0, 355)
         else:
             self.tableWidget_9.clear()
-
 
     def setting_tab_control(self, button_name):
 
@@ -1378,7 +1477,6 @@ class Main_window(QMainWindow, main_ui):
             self.label_52.setText("تېلفۇن نۇمۇرىنى توغرا كىرگۈزۈڭ!")
             self.lineEdit_34.setFocus(True)
 
-
         elif user_password == "" or user_password.isspace():
             self.label_52.setText("بىر ئىناۋەتلىك پارول كىرگۈزۈڭ")
             self.lineEdit_36.clear()
@@ -1392,10 +1490,14 @@ class Main_window(QMainWindow, main_ui):
                 self.lineEdit_37.setFocus(True)
 
         else:
-            result = Library_db.add_info("users", list_of_values, user_name, "user_name")
+            result = Library_db.add_info(
+                "users", list_of_values, user_name, "user_name"
+            )
             if result == "exist":
                 self.label_52.clear()
-                self.message_close("باشقۇرغۇچى قوشۇش", f"باشقۇرغۇچى '{user_name}' قوشۇلۇپ بولغان!\n\n")
+                self.message_close(
+                    "باشقۇرغۇچى قوشۇش", f"باشقۇرغۇچى '{user_name}' قوشۇلۇپ بولغان!\n\n"
+                )
 
             elif result == "added":
                 self.statusBar.showMessage(f"'{user_name}' was added to 'user'", 4000)
@@ -1463,7 +1565,10 @@ class Main_window(QMainWindow, main_ui):
 
     def user_phone_number_empty(self):
         text = self.label_52.text()
-        if text == "تېلفۇن نۇمۇرىنى كىرگۈزۈڭ!" or text == "تېلفۇن نۇمۇرىنى توغرا كىرگۈزۈڭ!":
+        if (
+            text == "تېلفۇن نۇمۇرىنى كىرگۈزۈڭ!"
+            or text == "تېلفۇن نۇمۇرىنى توغرا كىرگۈزۈڭ!"
+        ):
             self.label_52.clear()
 
     def user_password_empty(self):
@@ -1519,11 +1624,10 @@ class Main_window(QMainWindow, main_ui):
         self.lineEdit_43.setText(user_pass)
         self.lineEdit_44.setText(user_pass)
         self.pushButton_21.setDisabled(True)
-        if remember == 'on':
+        if remember == "on":
             self.checkBox_5.setChecked(True)
         else:
             self.checkBox_5.setChecked(False)
-
 
     def login_for_edit(self):
 
@@ -1531,7 +1635,10 @@ class Main_window(QMainWindow, main_ui):
             user_name = self.lineEdit_38.text()
             user_pass_enter = self.lineEdit_40.text()
             if user_pass_enter == "" or user_pass_enter.isspace():
-                self.message_close("باشقۇرغۇچى ئۆزگەرتىش", f"باشقۇرغۇچى '{user_name}' نىڭ پارولنى كىرگۈزۈڭ!")
+                self.message_close(
+                    "باشقۇرغۇچى ئۆزگەرتىش",
+                    f"باشقۇرغۇچى '{user_name}' نىڭ پارولنى كىرگۈزۈڭ!",
+                )
 
             else:
                 data = Library_db.search_from_column("users", "user_name", user_name)
@@ -1549,15 +1656,16 @@ class Main_window(QMainWindow, main_ui):
                     self.lineEdit_42.setText(e_mail)
                     self.lineEdit_43.setText(user_pass)
                     self.lineEdit_44.setText(user_pass)
-                    if remember == 'on':
+                    if remember == "on":
                         self.checkBox_5.setChecked(True)
                     else:
                         self.checkBox_5.setChecked(False)
 
-
                 else:
-                     self.message_close("باشقۇرغۇچى ئۆزگەرتىش",
-                                        f"باشقۇرغۇچى '{user_name}' نىڭ پارولىنى خاتا كىرگۈزدىڭىز!")
+                    self.message_close(
+                        "باشقۇرغۇچى ئۆزگەرتىش",
+                        f"باشقۇرغۇچى '{user_name}' نىڭ پارولىنى خاتا كىرگۈزدىڭىز!",
+                    )
 
     def get_super_user_pass(self):
 
@@ -1577,14 +1685,20 @@ class Main_window(QMainWindow, main_ui):
 
         self.in_put_box = QLineEdit(self.dialog)
         self.in_put_box.setGeometry(20, 75, 260, 31)
-        self.in_put_box.setStyleSheet("border-radius:4px; padding-right:32px; padding-left:2px;")
+        self.in_put_box.setStyleSheet(
+            "border-radius:4px; padding-right:32px; padding-left:2px;"
+        )
         self.in_put_box.setEchoMode(2)
 
         self.pushbutton_for_super_user_pass = QPushButton(self.dialog)
         use_black = QIcon(QPixmap(":/login/icons/Password-hide-black.svg"))
         self.pushbutton_for_super_user_pass.setStyleSheet("background:transparent;")
-        self.pushbutton_for_super_user_pass.pressed.connect(self.super_user_pass_show_pressed)
-        self.pushbutton_for_super_user_pass.released.connect(self.super_user_pass_show_released)
+        self.pushbutton_for_super_user_pass.pressed.connect(
+            self.super_user_pass_show_pressed
+        )
+        self.pushbutton_for_super_user_pass.released.connect(
+            self.super_user_pass_show_released
+        )
         self.pushbutton_for_super_user_pass.setGeometry(235, 66, 50, 50)
         size = QSize(22, 22)
         self.pushbutton_for_super_user_pass.setIconSize(size)
@@ -1592,28 +1706,38 @@ class Main_window(QMainWindow, main_ui):
 
         self.pushbutton_for_confirm = QPushButton("مۇقۇملاش", self.dialog)
         self.pushbutton_for_confirm.setFont(self.my_font)
-        self.pushbutton_for_confirm.setStyleSheet("background-color: rgb(15, 128, 255);border-radius:5px; color: white;")
-        self.pushbutton_for_confirm.pressed.connect(self.super_user_pass_confirm_pressed)
-        self.pushbutton_for_confirm.released.connect(self.super_user_pass_confirm_released)
+        self.pushbutton_for_confirm.setStyleSheet(
+            "background-color: rgb(15, 128, 255);border-radius:5px; color: white;"
+        )
+        self.pushbutton_for_confirm.pressed.connect(
+            self.super_user_pass_confirm_pressed
+        )
+        self.pushbutton_for_confirm.released.connect(
+            self.super_user_pass_confirm_released
+        )
         self.pushbutton_for_confirm.setGeometry(153, 123, 120, 34)
 
         self.pushbutton_for_cancel = QPushButton("ئىتىش", self.dialog)
         self.pushbutton_for_cancel.setFont(self.my_font)
-        self.pushbutton_for_cancel.setStyleSheet("background-color:rgb(255, 255, 255);border-radius:5px;")
+        self.pushbutton_for_cancel.setStyleSheet(
+            "background-color:rgb(255, 255, 255);border-radius:5px;"
+        )
         self.pushbutton_for_cancel.pressed.connect(self.super_user_pass_cancel_pressed)
-        self.pushbutton_for_cancel.released.connect(self.super_user_pass_cancel_released)
+        self.pushbutton_for_cancel.released.connect(
+            self.super_user_pass_cancel_released
+        )
         self.pushbutton_for_cancel.setGeometry(28, 123, 120, 34)
         self.dialog.exec_()
         if self.super_user_pass_ok == "no":
             self.checkBox.setChecked(False)
 
-
     def super_user_pass_show_pressed(self):
         self.in_put_box.setEchoMode(0)
         use_black = QIcon(QPixmap(":/login/icons/Password-show-black.svg"))
         self.pushbutton_for_super_user_pass.setIcon(use_black)
-        self.pushbutton_for_super_user_pass.setStyleSheet("padding-top:2px; padding-left: 2px;"
-                                                          "background:transparent;")
+        self.pushbutton_for_super_user_pass.setStyleSheet(
+            "padding-top:2px; padding-left: 2px;" "background:transparent;"
+        )
 
     def super_user_pass_show_released(self):
         self.in_put_box.setEchoMode(2)
@@ -1621,11 +1745,12 @@ class Main_window(QMainWindow, main_ui):
         self.pushbutton_for_super_user_pass.setIcon(use_black)
         self.pushbutton_for_super_user_pass.setStyleSheet("background:transparent;")
 
-
     def super_user_pass_confirm_pressed(self):
-        self.pushbutton_for_confirm.setStyleSheet("padding-top:2px; padding-left: 2px;"
-                                                  "background-color: rgb(34, 101, 201);border-radius:5px; "
-                                                  "color: white;")
+        self.pushbutton_for_confirm.setStyleSheet(
+            "padding-top:2px; padding-left: 2px;"
+            "background-color: rgb(34, 101, 201);border-radius:5px; "
+            "color: white;"
+        )
 
         pass_word = self.in_put_box.text()
         if pass_word == "" or pass_word.isspace():
@@ -1652,21 +1777,22 @@ class Main_window(QMainWindow, main_ui):
             else:
                 self.message_close("پارول توغۇرلاش", "پارولىڭىزنى توغرا كىرگۈزۈڭ!")
 
-
     def super_user_pass_confirm_released(self):
-        self.pushbutton_for_confirm.setStyleSheet("background-color: rgb(15, 128, 255);border-radius:5px; "
-                                                  "color: white;")
+        self.pushbutton_for_confirm.setStyleSheet(
+            "background-color: rgb(15, 128, 255);border-radius:5px; " "color: white;"
+        )
 
     def super_user_pass_cancel_pressed(self):
-        self.pushbutton_for_confirm.setStyleSheet("background-color:rgb(255, 255, 255);border-radius:5px;")
-        self.pushbutton_for_cancel.setStyleSheet("background-color: rgb(15, 128, 255);border-radius:5px; "
-                                                  "color: white;")
-
+        self.pushbutton_for_confirm.setStyleSheet(
+            "background-color:rgb(255, 255, 255);border-radius:5px;"
+        )
+        self.pushbutton_for_cancel.setStyleSheet(
+            "background-color: rgb(15, 128, 255);border-radius:5px; " "color: white;"
+        )
 
     def super_user_pass_cancel_released(self):
         self.dialog.close()
         self.checkBox.setChecked(False)
-
 
     def show_user_pass_edit_login(self):
         self.lineEdit_40.setEchoMode(0)
@@ -1677,7 +1803,6 @@ class Main_window(QMainWindow, main_ui):
         self.lineEdit_40.setEchoMode(2)
         password_hide_black = QIcon(QPixmap(":/login/icons/Password-hide-black.svg"))
         self.pushButton_42.setIcon(password_hide_black)
-
 
     def show_user_pass_edit(self):
         self.lineEdit_43.setEchoMode(0)
@@ -1753,23 +1878,29 @@ class Main_window(QMainWindow, main_ui):
             self.message_close("باشقۇرغۇچى ئۆزگەرتىش", "تېلفۇن نۇمۇرىنى كىرگۈزۈڭ!")
             self.lineEdit_41.setFocus()
         elif len(new_phone_number) < 11:
-            self.message_close("باشقۇرغۇچى ئۆزگەرتىش", "تېلفۇن نۇمۇرىنى توغرا كىرگۈزۈڭ!")
+            self.message_close(
+                "باشقۇرغۇچى ئۆزگەرتىش", "تېلفۇن نۇمۇرىنى توغرا كىرگۈزۈڭ!"
+            )
             self.lineEdit_41.setFocus()
         elif new_pass_word == "" or new_pass_word.isspace():
             self.message_close("باشقۇرغۇچى ئۆزگەرتىش", "پارول كىرگۈزۈڭ!")
             self.lineEdit_43.setFocus()
         elif new_pass_confirm != new_pass_word:
-            self.message_close("باشقۇرغۇچى ئۆزگەرتىش", "پارول ئوخشاش ئەمەس قايتا كىرگۈزۈڭ!")
+            self.message_close(
+                "باشقۇرغۇچى ئۆزگەرتىش", "پارول ئوخشاش ئەمەس قايتا كىرگۈزۈڭ!"
+            )
             self.lineEdit_44.setFocus()
         else:
             if remember == 0:
                 remember = "off"
             elif remember == 2:
                 remember = "on"
-            Library_db.cur.execute(f"UPDATE Library.users SET user_name = '{new_user_name}', "
-                                   f"phone_number = '{new_phone_number}', e_mail = '{new_e_mail}', "
-                                   f"password = '{new_pass_word}', remember = '{remember}' "
-                                   f"WHERE(user_name = '{old_user_name}')")
+            Library_db.cur.execute(
+                f"UPDATE Library.users SET user_name = '{new_user_name}', "
+                f"phone_number = '{new_phone_number}', e_mail = '{new_e_mail}', "
+                f"password = '{new_pass_word}', remember = '{remember}' "
+                f"WHERE(user_name = '{old_user_name}')"
+            )
             Library_db.db.commit()
             self.statusBar.showMessage("Changes successfully saved", 4000)
             self.view_users("users")
@@ -1782,8 +1913,6 @@ class Main_window(QMainWindow, main_ui):
             self.frame_2.setDisabled(True)
             self.checkBox_5.setChecked(False)
             self.edit_user_frame_flag = "disable"
-
-
 
     def user_delete(self):
         old_user_name = self.lineEdit_38.text()
@@ -1808,8 +1937,9 @@ class Main_window(QMainWindow, main_ui):
         if self.checkBox.isChecked():
             user_name = self.lineEdit_39.text()
         if text == "ھەئە":
-            Library_db.cur.execute("DELETE FROM Library.users "
-                                   f"WHERE(user_name = '{user_name}')")
+            Library_db.cur.execute(
+                "DELETE FROM Library.users " f"WHERE(user_name = '{user_name}')"
+            )
             Library_db.db.commit()
             self.statusBar.showMessage(f" the user '{user_name}' was deleted!", 4000)
             self.view_users("users")
@@ -1886,7 +2016,15 @@ class Main_window(QMainWindow, main_ui):
         end_time = self.now.addYears(1)
         end_time = end_time.toString("dd-MM-yyyy")
 
-        list_of_values = [name, phone, e_mail, address, balance, self.now.toString("dd-MM-yyyy"), end_time]
+        list_of_values = [
+            name,
+            phone,
+            e_mail,
+            address,
+            balance,
+            self.now.toString("dd-MM-yyyy"),
+            end_time,
+        ]
         if name == "" or name.isspace():
             self.message_close("ئەزا قوشۇش", "ئەزا ئىسمىنى كىرگۈزۈڭ!")
         elif phone == "":
@@ -1899,7 +2037,9 @@ class Main_window(QMainWindow, main_ui):
             self.message_close("ئەزا قوشۇش", "زاكالەت پۇل سوممىسىنى كىرگۈزۈڭ!")
             self.lineEdit_62.setFocus(True)
         elif int(balance) < 50:
-            self.message_close("ئەزا قوشۇش", "زاكالەت پۇل سوممىسى 50 دى ئاز بولسا بولمايدۇ!")
+            self.message_close(
+                "ئەزا قوشۇش", "زاكالەت پۇل سوممىسى 50 دى ئاز بولسا بولمايدۇ!"
+            )
             self.lineEdit_62.setFocus(True)
         else:
             columns_list = Library_db.get_columns_list("client")
@@ -1911,13 +2051,17 @@ class Main_window(QMainWindow, main_ui):
             for val_ue in list_of_values:
                 values = values + "'" + val_ue + "', "
             values = values[:-2]
-            Library_db.cur.execute(f"INSERT INTO Library.client({column_names})VALUES({values})")
+            Library_db.cur.execute(
+                f"INSERT INTO Library.client({column_names})VALUES({values})"
+            )
             Library_db.db.commit()
 
             self.add_client_for_view()
 
             self.statusBar.showMessage(f"'{name}' was added to 'client'", 4000)
-            Library_db.cur.execute(f"SELECT client_name, client_no, start_time, end_time FROM Library.client")
+            Library_db.cur.execute(
+                f"SELECT client_name, client_no, start_time, end_time FROM Library.client"
+            )
             data = Library_db.cur.fetchall()
             client_name = data[len(data) - 1][0]
             client_no = data[len(data) - 1][1]
@@ -1936,18 +2080,23 @@ class Main_window(QMainWindow, main_ui):
             self.lineEdit_63.setFocus(True)
             self.create_table_for_client(client_no)
 
-
     def create_table_for_client(self, client_no):
-        Library_db.cur.execute(f"CREATE TABLE IF NOT EXISTS client_info.{client_no}(book_name char(60), "
-                               f"type char(25), days char(3), start_date_time char(30), return_date_time char(30), "
-                               f"manager char(35), list_no int AUTO_INCREMENT, PRIMARY KEY(list_no))")
+        Library_db.cur.execute(
+            f"CREATE TABLE IF NOT EXISTS client_info.{client_no}(book_name char(60), "
+            f"type char(25), days char(3), start_date_time char(30), return_date_time char(30), "
+            f"manager char(35), list_no int AUTO_INCREMENT, PRIMARY KEY(list_no))"
+        )
 
-        Library_db.cur.execute(f"ALTER TABLE client_info.{client_no} AUTO_INCREMENT = 1")
+        Library_db.cur.execute(
+            f"ALTER TABLE client_info.{client_no} AUTO_INCREMENT = 1"
+        )
 
     def select_client_for_edit(self):
         self.edit_client_frame_flag = "no"
         client_no = self.listWidget_3.currentItem().text()
-        Library_db.cur.execute(f"SELECT * FROM Library.client WHERE(client_no = '{client_no}')")
+        Library_db.cur.execute(
+            f"SELECT * FROM Library.client WHERE(client_no = '{client_no}')"
+        )
         data = Library_db.cur.fetchall()
         client_name = data[0][0]
         client_phone = data[0][1]
@@ -1982,7 +2131,9 @@ class Main_window(QMainWindow, main_ui):
     def search_clients_for_view(self):
         content = self.lineEdit_15.text()
         if self.radioButton_10.isChecked():
-            data = Library_db.search_from_column_like("client", "client_no", "client_no", content)
+            data = Library_db.search_from_column_like(
+                "client", "client_no", "client_no", content
+            )
             if data:
                 self.listWidget_3.clear()
                 client_no = [str(client_no) for client_no in data]
@@ -1991,14 +2142,15 @@ class Main_window(QMainWindow, main_ui):
                 self.listWidget_3.clear()
 
         elif self.radioButton_9.isChecked():
-            data = Library_db.search_from_column_like("client", "client_no", "client_name", content)
+            data = Library_db.search_from_column_like(
+                "client", "client_no", "client_name", content
+            )
             if data:
                 self.listWidget_3.clear()
                 client_no = [str(client_no) for client_no in data]
                 self.listWidget_3.addItems(client_no)
             else:
                 self.listWidget_3.clear()
-
 
     def add_client_for_view(self):
         self.listWidget_3.clear()
@@ -2007,11 +2159,12 @@ class Main_window(QMainWindow, main_ui):
         client_no = [str(client_no[0]) for client_no in data]
         self.listWidget_3.addItems(client_no)
 
-
     def leave_edit_client(self):
         if self.edit_client_frame_flag == "no":
             client_no = self.listWidget_3.currentItem().text()
-            Library_db.cur.execute(f"SELECT client_name FROM Library.client WHERE(client_no = '{client_no}')")
+            Library_db.cur.execute(
+                f"SELECT client_name FROM Library.client WHERE(client_no = '{client_no}')"
+            )
             text = Library_db.cur.fetchall()
             text = text[0][0]
 
@@ -2028,7 +2181,6 @@ class Main_window(QMainWindow, main_ui):
             msg.buttonClicked.connect(self.leave_edit_client_confirm)
             msg.exec_()
 
-
     def leave_edit_client_confirm(self, i):
         text = i.text()
         if text == "ھەئە":
@@ -2036,9 +2188,12 @@ class Main_window(QMainWindow, main_ui):
         else:
             self.clear_client_edit()
 
-
     def leave_add_client(self):
-        if self.lineEdit_62.text() or self.lineEdit_63.text() or self.lineEdit_64.text():
+        if (
+            self.lineEdit_62.text()
+            or self.lineEdit_63.text()
+            or self.lineEdit_64.text()
+        ):
             msg = QMessageBox()
             msg.setWindowTitle("ئەزا ئۆزگەرتىش")
             msg.setText("نۆۋەتتىكى ئەزانى قوشۇشتىن چىكىنەمسىز؟")
@@ -2074,8 +2229,10 @@ class Main_window(QMainWindow, main_ui):
 
     def delete_client(self):
         client_no = self.listWidget_3.currentItem().text()
-        Library_db.cur.execute(f"SELECT client_name FROM Library.client "
-                               f"WHERE (client_no = '{client_no}')")
+        Library_db.cur.execute(
+            f"SELECT client_name FROM Library.client "
+            f"WHERE (client_no = '{client_no}')"
+        )
         client_name = Library_db.cur.fetchall()
         client_name = client_name[0][0]
 
@@ -2094,13 +2251,17 @@ class Main_window(QMainWindow, main_ui):
 
     def client_delete_confirm(self, i):
         client_no = self.listWidget_3.currentItem().text()
-        Library_db.cur.execute(f"SELECT client_name FROM Library.client "
-                               f"WHERE (client_no = '{client_no}')")
+        Library_db.cur.execute(
+            f"SELECT client_name FROM Library.client "
+            f"WHERE (client_no = '{client_no}')"
+        )
         client_name = Library_db.cur.fetchall()
         client_name = client_name[0][0]
         text = i.text()
         if text == "ھەئە":
-            Library_db.cur.execute(f"DELETE FROM Library.client WHERE (client_no = '{client_no}')")
+            Library_db.cur.execute(
+                f"DELETE FROM Library.client WHERE (client_no = '{client_no}')"
+            )
             Library_db.cur.execute(f"DROP TABLE IF EXISTS client_info.{client_no}")
             Library_db.db.commit()
 
@@ -2141,7 +2302,9 @@ class Main_window(QMainWindow, main_ui):
             self.message_close("ئەزا ئۆزگەرتىش", "زاكالەت سوممىسىنى كىرگۈزۈڭ!")
         elif int(client_balance) < 50:
             self.edit_client_frame_flag = "no"
-            self.message_close("ئەزا ئۆزگەرتىش", "زاكالەت پۇل سوممىسى 50 دىن كىچىك بولسا بولمايدۇ!")
+            self.message_close(
+                "ئەزا ئۆزگەرتىش", "زاكالەت پۇل سوممىسى 50 دىن كىچىك بولسا بولمايدۇ!"
+            )
         else:
             client_no = self.listWidget_3.currentItem().text()
             new_name = self.lineEdit_70.text()
@@ -2151,8 +2314,16 @@ class Main_window(QMainWindow, main_ui):
             new_balance = self.lineEdit_68.text()
             start_date = self.lineEdit_76.text()
             end_date = self.lineEdit_72.text()
-            values = [new_name, new_phone, new_e_mail, new_address, new_balance,
-                      start_date, end_date, client_no]
+            values = [
+                new_name,
+                new_phone,
+                new_e_mail,
+                new_address,
+                new_balance,
+                start_date,
+                end_date,
+                client_no,
+            ]
             Library_db.up_date_table_info("client", values, "client_no", client_no)
             self.frame_4.setDisabled(True)
             self.edit_client_frame_flag = "yes"
@@ -2166,7 +2337,6 @@ class Main_window(QMainWindow, main_ui):
             self.lineEdit_72.clear()
             self.add_client_for_view()
             self.statusBar.showMessage("!ئۆزگەرتىشلەر ساقلاندى", 4000)
-
 
     def clear_client_edit(self):
         self.edit_client_frame_flag = "yes"
@@ -2193,7 +2363,6 @@ class Main_window(QMainWindow, main_ui):
         self.lineEdit_6.setFocus()
         self.tableWidget_3.setVisible(True)
         self.tab_control_within_tab("74")
-
 
     def open_add_book(self):
         if self.tabWidget_3.currentIndex() != 1:
@@ -2229,7 +2398,6 @@ class Main_window(QMainWindow, main_ui):
                 self.tabWidget_3.setCurrentIndex(2)
                 self.tab_control_within_tab("75")
 
-
     def search_book_tab_radio_button_check_changes(self):
         if self.radioButton.isChecked():
             self.lineEdit_6.setPlaceholderText("كىتاپ ئىسمىنى كىرگۈزۈڭ")
@@ -2245,7 +2413,6 @@ class Main_window(QMainWindow, main_ui):
             self.lineEdit_17.setPlaceholderText("كىتاپ كود نۇمۇرىنى كىرگۈزۈڭ")
         elif self.radioButton_5.isChecked():
             self.lineEdit_17.setPlaceholderText("كىتاپ ئاپتۇرىنى كىرگۈزۈڭ")
-
 
     def book_category_select_add(self):
         text = self.listWidget_4.currentItem().text()
@@ -2338,7 +2505,6 @@ class Main_window(QMainWindow, main_ui):
         added_date = self.full_date_time
         up_dated_date = ""
 
-
         if book_code == "" or book_code.isspace():
             self.label_17.setText("كىتاپ كود نۇمۇرىنى كىرگۈزۈڭ!")
             self.lineEdit_10.clear()
@@ -2364,11 +2530,25 @@ class Main_window(QMainWindow, main_ui):
             self.lineEdit_12.setFocus()
 
         else:
-            value_list = [book_name, book_category, book_author, book_publisher,
-                          book_code, import_price, sale_price, book_amount, book_comment,
-                          added_date, up_dated_date]
-            book_name_result = Library_db.search_from_column("books", "book_name", book_name)
-            book_code_result = Library_db.search_from_column("books", "book_code", book_code)
+            value_list = [
+                book_name,
+                book_category,
+                book_author,
+                book_publisher,
+                book_code,
+                import_price,
+                sale_price,
+                book_amount,
+                book_comment,
+                added_date,
+                up_dated_date,
+            ]
+            book_name_result = Library_db.search_from_column(
+                "books", "book_name", book_name
+            )
+            book_code_result = Library_db.search_from_column(
+                "books", "book_code", book_code
+            )
             if book_name_result:
                 msg = QMessageBox()
                 msg.setWindowTitle("كىتاپ قوشۇش")
@@ -2386,7 +2566,9 @@ class Main_window(QMainWindow, main_ui):
             elif book_code_result:
                 msg = QMessageBox()
                 msg.setWindowTitle("كىتاپ قوشۇش")
-                msg.setText("بۇ كود نۇمۇرىدا بىر كىتاپ قوشۇلۇپ بولغان!\n ئۈنى ئۆزگەرتەمسىز؟")
+                msg.setText(
+                    "بۇ كود نۇمۇرىدا بىر كىتاپ قوشۇلۇپ بولغان!\n ئۈنى ئۆزگەرتەمسىز؟"
+                )
                 msg.setFont(self.my_font)
                 yes_bt = QPushButton("ھەئە")
                 no_bt = QPushButton("ياق")
@@ -2397,7 +2579,6 @@ class Main_window(QMainWindow, main_ui):
 
                 msg.buttonClicked.connect(self.change_existed_book_code)
                 msg.exec_()
-
 
             else:
                 Library_db.add_books_to_table("books", value_list)
@@ -2414,7 +2595,6 @@ class Main_window(QMainWindow, main_ui):
                 self.lineEdit_12.clear()
                 self.textEdit_2.clear()
 
-
     def add_book_space_change(self):
         if self.label_17.text() == "كىتاپ كود نۇمۇرىنى كىرگۈزۈڭ!":
             self.label_17.clear()
@@ -2428,12 +2608,13 @@ class Main_window(QMainWindow, main_ui):
         elif self.label_17.text() == "كىتاپ سانىنى كىرگۈزۈڭ!":
             self.label_17.clear()
 
-
     def change_existed_book_code(self, i):
         text = i.text()
         if text == "ھەئە":
             book_code = self.lineEdit_10.text()
-            Library_db.cur.execute(f"SELECT book_name FROM Library.books WHERE(book_code = '{book_code}')")
+            Library_db.cur.execute(
+                f"SELECT book_name FROM Library.books WHERE(book_code = '{book_code}')"
+            )
             book_name = Library_db.cur.fetchall()
             book_name = book_name[0][0]
             self.open_edit_book()
@@ -2446,19 +2627,24 @@ class Main_window(QMainWindow, main_ui):
             self.open_edit_book()
             self.book_name_click_for_edit(book_name)
 
-
     def add_new_author_and_publisher(self):
         author = self.comboBox_6.currentText()
         publisher = self.comboBox_3.currentText()
         author_result = Library_db.search_from_column("author", "author_name", author)
-        publisher_result = Library_db.search_from_column("publisher", "publisher_name", publisher)
+        publisher_result = Library_db.search_from_column(
+            "publisher", "publisher_name", publisher
+        )
         if not author_result:
-            Library_db.cur.execute(f"INSERT INTO Library.author(author_name) VALUES('{author}')")
+            Library_db.cur.execute(
+                f"INSERT INTO Library.author(author_name) VALUES('{author}')"
+            )
             Library_db.db.commit()
             self.add_author_to_view_and_edit("author")
             self.add_author_to_combo("author")
         if not publisher_result:
-            Library_db.cur.execute(f"INSERT INTO Library.publisher(publisher_name) VALUES('{publisher}')")
+            Library_db.cur.execute(
+                f"INSERT INTO Library.publisher(publisher_name) VALUES('{publisher}')"
+            )
             Library_db.db.commit()
             self.add_publisher_to_view_and_edit("publisher")
             self.add_publisher_to_combo("publisher")
@@ -2469,8 +2655,12 @@ class Main_window(QMainWindow, main_ui):
         book_code = self.lineEdit_10.text()
         book_sale_price = self.lineEdit_47.text()
         book_amount = self.lineEdit_12.text()
-        if (book_name != "" and not book_name.isspace()) or (book_code != "" and not book_code.isspace()) or \
-                book_sale_price != "" or book_amount != "":
+        if (
+            (book_name != "" and not book_name.isspace())
+            or (book_code != "" and not book_code.isspace())
+            or book_sale_price != ""
+            or book_amount != ""
+        ):
             msg = QMessageBox()
             msg.setWindowTitle("كىتاپ قوشۇش")
             msg.setText("نۆۋەتتىكى كىتاپنى قوشۇشنى ئەمەلدىن قالدۇرامسىز")
@@ -2498,7 +2688,9 @@ class Main_window(QMainWindow, main_ui):
     def cancel_add_book_confirm_within_tab(self, i):
         if i.text() == "ھەئە":
             self.left_from_books_tab_flag = "yes"
-            self.statusBar.showMessage("نۆۋەتتىكى كىتاپنى قوشۇش ئەمەلدىن قالدۇرۇلدى!", 4000)
+            self.statusBar.showMessage(
+                "نۆۋەتتىكى كىتاپنى قوشۇش ئەمەلدىن قالدۇرۇلدى!", 4000
+            )
             self.lineEdit_7.clear()
             self.pushButton_11.setText("كىتاپ تۈرىنى تاللاڭ")
             self.edit_line_for_author_add.clear()
@@ -2514,7 +2706,9 @@ class Main_window(QMainWindow, main_ui):
     def cancel_add_book_confirm(self, text):
         if text.text() == "ھەئە":
             self.left_from_books_tab_flag = "yes"
-            self.statusBar.showMessage("نۆۋەتتىكى كىتاپنى قوشۇش ئەمەلدىن قالدۇرۇلدى!", 4000)
+            self.statusBar.showMessage(
+                "نۆۋەتتىكى كىتاپنى قوشۇش ئەمەلدىن قالدۇرۇلدى!", 4000
+            )
             self.lineEdit_7.clear()
             self.pushButton_11.setText("كىتاپ تۈرىنى تاللاڭ")
             self.edit_line_for_author_add.clear()
@@ -2528,10 +2722,11 @@ class Main_window(QMainWindow, main_ui):
         else:
             self.left_from_books_tab_flag = "no"
 
-
     def search_category(self):
         content = self.lineEdit_57.text()
-        result = Library_db.search_from_column_like("category", "category_name", "category_name", content)
+        result = Library_db.search_from_column_like(
+            "category", "category_name", "category_name", content
+        )
         if result:
             self.listWidget_4.clear()
             self.listWidget_4.addItems(result)
@@ -2550,7 +2745,9 @@ class Main_window(QMainWindow, main_ui):
                 self.listWidget_5.addItems(result)
         else:
             if self.radioButton_6.isChecked():
-                result = Library_db.search_from_column_like("books", "book_name", "book_name", text)
+                result = Library_db.search_from_column_like(
+                    "books", "book_name", "book_name", text
+                )
                 if result:
                     self.listWidget_5.setVisible(True)
                     self.listWidget_5.clear()
@@ -2559,7 +2756,9 @@ class Main_window(QMainWindow, main_ui):
                     self.message_close("كىتاپ ئىزدەش", "ھېچقانداق كىتاپ تېپىلمىدى!")
 
             elif self.radioButton_5.isChecked():
-                result = Library_db.search_from_column_like("books", "book_name", "author", text)
+                result = Library_db.search_from_column_like(
+                    "books", "book_name", "author", text
+                )
                 if result:
                     self.listWidget_5.setVisible(True)
                     self.listWidget_5.clear()
@@ -2568,7 +2767,9 @@ class Main_window(QMainWindow, main_ui):
                     self.message_close("كىتاپ ئىزدەش", "ھېچقانداق كىتاپ تېپىلمىدى!")
 
             elif self.radioButton_4.isChecked():
-                result = Library_db.search_from_column_like("books", "book_name", "book_code", text)
+                result = Library_db.search_from_column_like(
+                    "books", "book_name", "book_code", text
+                )
                 if result:
                     self.listWidget_5.setVisible(True)
                     self.listWidget_5.clear()
@@ -2590,16 +2791,24 @@ class Main_window(QMainWindow, main_ui):
         if text == "" or text.isspace():
 
             if column == "book_name":
-                self.message_close("كىتاپ ئىزدەش", "ئىزدىمەكچى بولغان كىتاپ ئىسمىنى كىرگۈزۈڭ!")
+                self.message_close(
+                    "كىتاپ ئىزدەش", "ئىزدىمەكچى بولغان كىتاپ ئىسمىنى كىرگۈزۈڭ!"
+                )
             if column == "author":
-                self.message_close("كىتاپ ئىزدەش", "ئىزدىمەكچى بولغان كىتاپنىڭ ئاپتورىنى كىرگۈزۈڭ!")
+                self.message_close(
+                    "كىتاپ ئىزدەش", "ئىزدىمەكچى بولغان كىتاپنىڭ ئاپتورىنى كىرگۈزۈڭ!"
+                )
             if column == "book_code":
-                self.message_close("كىتاپ ئىزدەش", "ئىزدىمەكچى بولغان كىتاپ كود نۇمۇرىنى كىرگۈزۈڭ!")
+                self.message_close(
+                    "كىتاپ ئىزدەش", "ئىزدىمەكچى بولغان كىتاپ كود نۇمۇرىنى كىرگۈزۈڭ!"
+                )
             self.lineEdit_6.clear()
             self.lineEdit_6.setFocus()
 
         else:
-            Library_db.cur.execute(f"SELECT book_name FROM Library.books WHERE({column} LIKE '%{text}%')")
+            Library_db.cur.execute(
+                f"SELECT book_name FROM Library.books WHERE({column} LIKE '%{text}%')"
+            )
             result = Library_db.cur.fetchall()
             if result:
                 result_list = [book_name[0] for book_name in result]
@@ -2615,15 +2824,21 @@ class Main_window(QMainWindow, main_ui):
     def select_book_for_view(self):
         book_name = self.listWidget_6.currentItem().text()
         if self.radioButton.isChecked():
-            Library_db.cur.execute(f"SELECT book_name FROM Library.books WHERE(book_name ='{book_name}')")
+            Library_db.cur.execute(
+                f"SELECT book_name FROM Library.books WHERE(book_name ='{book_name}')"
+            )
             result = Library_db.cur.fetchone()
             self.lineEdit_6.setText(result[0])
         elif self.radioButton_2.isChecked():
-            Library_db.cur.execute(f"SELECT author FROM Library.books WHERE(book_name ='{book_name}')")
+            Library_db.cur.execute(
+                f"SELECT author FROM Library.books WHERE(book_name ='{book_name}')"
+            )
             result = Library_db.cur.fetchone()
             self.lineEdit_6.setText(result[0])
         elif self.radioButton_3.isChecked():
-            Library_db.cur.execute(f"SELECT book_code FROM Library.books WHERE(book_name ='{book_name}')")
+            Library_db.cur.execute(
+                f"SELECT book_code FROM Library.books WHERE(book_name ='{book_name}')"
+            )
             result = Library_db.cur.fetchone()
             self.lineEdit_6.setText(result[0])
         self.lineEdit_6.setFocus()
@@ -2631,7 +2846,9 @@ class Main_window(QMainWindow, main_ui):
         self.listWidget_6.setVisible(False)
         self.tableWidget_3.setRowCount(0)
         self.tableWidget_3.setRowCount(1)
-        Library_db.cur.execute(f"SELECT * FROM Library.books WHERE(book_name = '{book_name}')")
+        Library_db.cur.execute(
+            f"SELECT * FROM Library.books WHERE(book_name = '{book_name}')"
+        )
         result = Library_db.cur.fetchall()
 
         for row, data in enumerate(result):
@@ -2688,8 +2905,6 @@ class Main_window(QMainWindow, main_ui):
                 self.listWidget_5.setVisible(False)
                 self.listWidget.setVisible(False)
                 self.lineEdit_56.setVisible(False)
-
-
 
     def book_name_click_for_edit(self, book_name):
         text = book_name
@@ -2750,7 +2965,9 @@ class Main_window(QMainWindow, main_ui):
 
             elif sale_price == "":
                 self.left_from_books_tab_flag = "no"
-                self.message_close("كىتاپ ئۆزگەرتىش", "كىتاپنىڭ سېتىلىش باھاسىنى كىرگۈزۈڭ!")
+                self.message_close(
+                    "كىتاپ ئۆزگەرتىش", "كىتاپنىڭ سېتىلىش باھاسىنى كىرگۈزۈڭ!"
+                )
 
             elif book_amount == "":
                 self.left_from_books_tab_flag = "no"
@@ -2758,11 +2975,25 @@ class Main_window(QMainWindow, main_ui):
 
             else:
                 self.left_from_books_tab_flag = "yes"
-                value_list = [book_name, book_category, book_author, book_publisher,
-                              book_code, import_price, sale_price, book_amount, book_comment,
-                              added_date, up_dated_date]
-                Library_db.up_date_table_info("books", value_list, "book_name", old_book_name)
-                self.statusBar.showMessage(f"the book '{old_book_name}' is changed", 4000)
+                value_list = [
+                    book_name,
+                    book_category,
+                    book_author,
+                    book_publisher,
+                    book_code,
+                    import_price,
+                    sale_price,
+                    book_amount,
+                    book_comment,
+                    added_date,
+                    up_dated_date,
+                ]
+                Library_db.up_date_table_info(
+                    "books", value_list, "book_name", old_book_name
+                )
+                self.statusBar.showMessage(
+                    f"the book '{old_book_name}' is changed", 4000
+                )
                 self.show_book_for_view()
                 self.lineEdit_9.clear()
                 self.pushButton_13.setText("كىتاپ تۈرىنى تاللاڭ")
@@ -2777,8 +3008,6 @@ class Main_window(QMainWindow, main_ui):
                 self.textEdit.setDisabled(True)
         else:
             self.message_close("كىتاپ ئۆزگەرتىش", "ئالدى بىلەن بىر كىتاپ تاللاڭ!")
-
-
 
     def book_delete(self):
         if self.frame_6.isEnabled():
@@ -2798,7 +3027,6 @@ class Main_window(QMainWindow, main_ui):
         else:
             self.message_close("كىتاپ ئۆزگەرتىش", "ئالدى بىلەن بىر كىتاپ تاللاڭ!")
 
-
     def book_edit_clear(self):
         if self.frame_6.isEnabled():
             self.lineEdit_9.clear()
@@ -2813,14 +3041,13 @@ class Main_window(QMainWindow, main_ui):
             self.frame_6.setDisabled(True)
             self.textEdit.setDisabled(True)
 
-
-
-
     def delete_book_confirmation(self, i):
         confirmation = i.text()
         book_name = self.old_book_name_for_change
         if confirmation == "ھەئە":
-            Library_db.cur.execute(f"DELETE FROM Library.books WHERE(book_name = '{book_name}')")
+            Library_db.cur.execute(
+                f"DELETE FROM Library.books WHERE(book_name = '{book_name}')"
+            )
             Library_db.db.commit()
             self.show_book_for_view()
             self.lineEdit_9.clear()
@@ -2870,24 +3097,30 @@ class Main_window(QMainWindow, main_ui):
         amount = self.spinBox.text()
         if i == "name":
             book_name = code_or_name
-            Library_db.cur.execute(f"SELECT sale_price, amount FROM Library.books "
-                                   f"WHERE(book_name = '{book_name}')")
+            Library_db.cur.execute(
+                f"SELECT sale_price, amount FROM Library.books "
+                f"WHERE(book_name = '{book_name}')"
+            )
             result = Library_db.cur.fetchone()
 
             if result:
                 if result[1] == 0:
                     if self.tabWidget_2.currentIndex() == 0:
                         self.re_press_flag = "yes"
-                        self.message_close("كىتاپ سېتىش", "بۇ كىتاپتىن سىستىمىدا قالمىدى!")
+                        self.message_close(
+                            "كىتاپ سېتىش", "بۇ كىتاپتىن سىستىمىدا قالمىدى!"
+                        )
                         if self.re_press_flag == "yes":
                             self.re_press_flag = "no"
                         self.lineEdit.setFocus()
                         return
                 sale_price = result[0]
 
-                Library_db.cur.execute("INSERT INTO Library.days_record_for_view(book_name ,amount, sale_price, "
-                                       "total_price)"
-                                       f"VALUES('{book_name}', '{amount}','{sale_price}', '{sale_price}')")
+                Library_db.cur.execute(
+                    "INSERT INTO Library.days_record_for_view(book_name ,amount, sale_price, "
+                    "total_price)"
+                    f"VALUES('{book_name}', '{amount}','{sale_price}', '{sale_price}')"
+                )
 
                 Library_db.db.commit()
                 self.re_press_flag = "yes"
@@ -2910,8 +3143,11 @@ class Main_window(QMainWindow, main_ui):
                 else:
                     if self.tabWidget_2.currentIndex() == 0:
                         self.re_press_flag = "yes"
-                        self.message_close("كىتاپ سېتىش", "كىتاپ ئىسمىدا "
-                                                          "خاتالىق بار ياكى بۇ كىتاپ سىستىمىغا كىرگۈزۈلمىگەن!")
+                        self.message_close(
+                            "كىتاپ سېتىش",
+                            "كىتاپ ئىسمىدا "
+                            "خاتالىق بار ياكى بۇ كىتاپ سىستىمىغا كىرگۈزۈلمىگەن!",
+                        )
 
                         if self.re_press_flag == "yes":
                             self.re_press_flag = "no"
@@ -2919,15 +3155,19 @@ class Main_window(QMainWindow, main_ui):
 
         elif i == "code":
             book_code = code_or_name
-            Library_db.cur.execute(f"SELECT book_name, sale_price, amount FROM Library.books "
-                                   f"WHERE(book_code = '{book_code}')")
+            Library_db.cur.execute(
+                f"SELECT book_name, sale_price, amount FROM Library.books "
+                f"WHERE(book_code = '{book_code}')"
+            )
             result = Library_db.cur.fetchone()
 
             if result:
                 if result[2] == 0:
                     if self.tabWidget_2.currentIndex() == 0:
                         self.re_press_flag = "yes"
-                        self.message_close("كىتاپ سېتىش", "بۇ كىتاپتىن سىستىمىدا قالمىدى!")
+                        self.message_close(
+                            "كىتاپ سېتىش", "بۇ كىتاپتىن سىستىمىدا قالمىدى!"
+                        )
 
                         if self.re_press_flag == "yes":
                             self.re_press_flag = "no"
@@ -2936,9 +3176,11 @@ class Main_window(QMainWindow, main_ui):
 
                 book_name = result[0]
                 sale_price = result[1]
-                Library_db.cur.execute("INSERT INTO Library.days_record_for_view(book_name ,amount, sale_price, "
-                                       "total_price)"
-                                       f"VALUES('{book_name}', '{amount}','{sale_price}', '{sale_price}')")
+                Library_db.cur.execute(
+                    "INSERT INTO Library.days_record_for_view(book_name ,amount, sale_price, "
+                    "total_price)"
+                    f"VALUES('{book_name}', '{amount}','{sale_price}', '{sale_price}')"
+                )
                 Library_db.db.commit()
                 self.re_press_flag = "yes"
                 self.lineEdit.clearFocus()
@@ -2951,7 +3193,9 @@ class Main_window(QMainWindow, main_ui):
                 if code_or_name == "" or code_or_name.isspace():
                     if self.tabWidget_2.currentIndex() == 0:
                         self.re_press_flag = "yes"
-                        self.message_close("كىتاپ سېتىش", "كىتاپ كود نۇمۇرىنى كىرگۈزۈڭ!")
+                        self.message_close(
+                            "كىتاپ سېتىش", "كىتاپ كود نۇمۇرىنى كىرگۈزۈڭ!"
+                        )
 
                         if self.re_press_flag == "yes":
                             self.re_press_flag = "no"
@@ -2960,8 +3204,11 @@ class Main_window(QMainWindow, main_ui):
                 else:
                     if self.tabWidget_2.currentIndex() == 0:
                         self.re_press_flag = "yes"
-                        self.message_close("كىتاپ سېتىش", "كىتاپ كود نۇمۇرىدا "
-                                                          "خاتالىق بار ياكى بۇ كىتاپ سىستىمىغا كىرگۈزۈلمىگەن!")
+                        self.message_close(
+                            "كىتاپ سېتىش",
+                            "كىتاپ كود نۇمۇرىدا "
+                            "خاتالىق بار ياكى بۇ كىتاپ سىستىمىغا كىرگۈزۈلمىگەن!",
+                        )
 
                         if self.re_press_flag == "yes":
                             self.re_press_flag = "no"
@@ -3002,8 +3249,10 @@ class Main_window(QMainWindow, main_ui):
                 if row == row_len:
                     self.lineEdit_3.setReadOnly(False)
                     if self.radioButton_8.isChecked():
-                        Library_db.cur.execute(f"SELECT book_code FROM Library.books "
-                                               f"WHERE( book_name = '{book_name}')")
+                        Library_db.cur.execute(
+                            f"SELECT book_code FROM Library.books "
+                            f"WHERE( book_name = '{book_name}')"
+                        )
                         book_code = Library_db.cur.fetchone()
                         self.lineEdit.setText(book_code[0])
                     else:
@@ -3015,7 +3264,9 @@ class Main_window(QMainWindow, main_ui):
             self.tableWidget_10.setEditTriggers(QAbstractItemView.NoEditTriggers)
             self.tableWidget_10.resizeColumnsToContents()
             self.tableWidget_10.setContextMenuPolicy(Qt.CustomContextMenu)
-            self.tableWidget_10.customContextMenuRequested.connect(self.show_delete_cancel_menu)
+            self.tableWidget_10.customContextMenuRequested.connect(
+                self.show_delete_cancel_menu
+            )
 
         else:
             self.lineEdit_3.setReadOnly(True)
@@ -3039,8 +3290,10 @@ class Main_window(QMainWindow, main_ui):
                     data = Library_db.cur.fetchall()
                     row_id = data[row_num][4]
 
-                    Library_db.cur.execute(f"DELETE FROM Library.days_record_for_view "
-                                           f"WHERE(book_id = '{row_id}')")
+                    Library_db.cur.execute(
+                        f"DELETE FROM Library.days_record_for_view "
+                        f"WHERE(book_id = '{row_id}')"
+                    )
                     Library_db.db.commit()
                     if row_len == 1:
                         self.lineEdit.clear()
@@ -3062,7 +3315,9 @@ class Main_window(QMainWindow, main_ui):
 
     def amount_change(self):
         new_amount = self.spinBox.text()
-        Library_db.cur.execute("SELECT sale_price, book_id, book_name, amount FROM Library.days_record_for_view")
+        Library_db.cur.execute(
+            "SELECT sale_price, book_id, book_name, amount FROM Library.days_record_for_view"
+        )
         result = Library_db.cur.fetchall()
         if result:
             row_len = len(result)
@@ -3072,32 +3327,46 @@ class Main_window(QMainWindow, main_ui):
             book_name = result[row_len - 1][2]
             old_amount = result[row_len - 1][3]
 
-            Library_db.cur.execute(f"SELECT amount FROM Library.books WHERE(book_name = '{book_name}')")
+            Library_db.cur.execute(
+                f"SELECT amount FROM Library.books WHERE(book_name = '{book_name}')"
+            )
             stock_amount = Library_db.cur.fetchone()
             stock_amount = stock_amount[0]
-            Library_db.cur.execute(f"SELECT amount FROM Library.days_record_for_view "
-                                   f"WHERE(book_name = '{book_name}')")
+            Library_db.cur.execute(
+                f"SELECT amount FROM Library.days_record_for_view "
+                f"WHERE(book_name = '{book_name}')"
+            )
             current_sold_amount_list = Library_db.cur.fetchall()
             if current_sold_amount_list and len(current_sold_amount_list) > 1:
-                current_sold_amount_list = [amount[0] for amount in current_sold_amount_list[:-1]]
+                current_sold_amount_list = [
+                    amount[0] for amount in current_sold_amount_list[:-1]
+                ]
                 current_sold_amount = 0
                 for amount in current_sold_amount_list:
                     current_sold_amount += int(amount)
 
                 stock_amount -= current_sold_amount
                 if int(new_amount) > int(stock_amount):
-                    self.message_close("كىتاپ سېتىش", f"بۇ كىتاپتىن سىستىمىدا پەقەت {stock_amount} دانىسىلا قالدى!")
+                    self.message_close(
+                        "كىتاپ سېتىش",
+                        f"بۇ كىتاپتىن سىستىمىدا پەقەت {stock_amount} دانىسىلا قالدى!",
+                    )
                     self.spinBox.setValue(old_amount)
                     return
 
             elif int(new_amount) > int(stock_amount):
 
-                self.message_close("كىتاپ سېتىش", f"بۇ كىتاپتىن سىستىمىدا پەقەت {stock_amount} دانىسىلا قالدى!")
+                self.message_close(
+                    "كىتاپ سېتىش",
+                    f"بۇ كىتاپتىن سىستىمىدا پەقەت {stock_amount} دانىسىلا قالدى!",
+                )
                 self.spinBox.setValue(old_amount)
                 return
 
-            Library_db.cur.execute(f"UPDATE Library.days_record_for_view SET amount = '{new_amount}', "
-                                   f"total_price = '{total_price}' WHERE(book_id = '{book_id}')")
+            Library_db.cur.execute(
+                f"UPDATE Library.days_record_for_view SET amount = '{new_amount}', "
+                f"total_price = '{total_price}' WHERE(book_id = '{book_id}')"
+            )
             Library_db.db.commit()
 
             self.view_book_details()
@@ -3166,8 +3435,10 @@ class Main_window(QMainWindow, main_ui):
                     if self.sale_button_flag == "yes":
                         self.sale_button_flag = "no"
                     return
-                Library_db.cur.execute(f"SELECT sale_price, amount FROM Library.books "
-                                       f"WHERE(book_name = '{book_name}')")
+                Library_db.cur.execute(
+                    f"SELECT sale_price, amount FROM Library.books "
+                    f"WHERE(book_name = '{book_name}')"
+                )
                 result = Library_db.cur.fetchone()
 
                 if result:
@@ -3175,7 +3446,9 @@ class Main_window(QMainWindow, main_ui):
                     amount = result[1]
                     if amount == 0:
                         self.sale_button_flag = "yes"
-                        self.message_close("كىتاپ سېتىش", "بۇ كىتاپتىن سىستىمىدا قالمىدى!")
+                        self.message_close(
+                            "كىتاپ سېتىش", "بۇ كىتاپتىن سىستىمىدا قالمىدى!"
+                        )
 
                         self.lineEdit.setFocus()
                         if self.sale_button_flag == "yes":
@@ -3184,9 +3457,11 @@ class Main_window(QMainWindow, main_ui):
 
                     if self.lineEdit_4.text() == "":
 
-                        Library_db.cur.execute("INSERT INTO Library.days_record_for_view(book_name ,amount, "
-                                               "sale_price, total_price)"
-                                               f"VALUES('{book_name}', '1','{sale_price}', '{sale_price}')")
+                        Library_db.cur.execute(
+                            "INSERT INTO Library.days_record_for_view(book_name ,amount, "
+                            "sale_price, total_price)"
+                            f"VALUES('{book_name}', '1','{sale_price}', '{sale_price}')"
+                        )
                         Library_db.db.commit()
 
                         self.view_book_details()
@@ -3194,7 +3469,9 @@ class Main_window(QMainWindow, main_ui):
                         balance = self.lineEdit_4.text()
                         if int(balance) < 0:
                             self.sale_button_flag = "yes"
-                            self.message_close("كىتاپ سېتىش", "تۆلەنگەن پۇل يىتەرلىك ئەمەس!")
+                            self.message_close(
+                                "كىتاپ سېتىش", "تۆلەنگەن پۇل يىتەرلىك ئەمەس!"
+                            )
 
                             if self.sale_button_flag == "yes":
                                 self.sale_button_flag = "no"
@@ -3205,7 +3482,9 @@ class Main_window(QMainWindow, main_ui):
                         balance = self.lineEdit_4.text()
                         if int(balance) < 0:
                             self.sale_button_flag = "yes"
-                            self.message_close("كىتاپ سېتىش", "تۆلەنگەن پۇل يىتەرلىك ئەمەس!")
+                            self.message_close(
+                                "كىتاپ سېتىش", "تۆلەنگەن پۇل يىتەرلىك ئەمەس!"
+                            )
 
                             if self.sale_button_flag == "yes":
                                 self.sale_button_flag = "no"
@@ -3213,15 +3492,21 @@ class Main_window(QMainWindow, main_ui):
                             self.update_days_sale_record()
                     else:
                         self.sale_button_flag = "yes"
-                        self.message_close("كىتاپ سېتىش", "كىتاپ ئىسمىدا"
-                                                          " خاتالىق بار ياكى بۇ كىتاپ سىستىمىغا كىرگۈزۈلمىگەن!")
+                        self.message_close(
+                            "كىتاپ سېتىش",
+                            "كىتاپ ئىسمىدا"
+                            " خاتالىق بار ياكى بۇ كىتاپ سىستىمىغا كىرگۈزۈلمىگەن!",
+                        )
 
                         if self.sale_button_flag == "yes":
                             self.sale_button_flag = "no"
                 else:
                     self.sale_button_flag = "yes"
-                    self.message_close("كىتاپ سېتىش", "كىتاپ ئىسمىدا"
-                                                      " خاتالىق بار ياكى بۇ كىتاپ سىستىمىغا كىرگۈزۈلمىگەن!")
+                    self.message_close(
+                        "كىتاپ سېتىش",
+                        "كىتاپ ئىسمىدا"
+                        " خاتالىق بار ياكى بۇ كىتاپ سىستىمىغا كىرگۈزۈلمىگەن!",
+                    )
 
                     if self.sale_button_flag == "yes":
                         self.sale_button_flag = "no"
@@ -3238,8 +3523,10 @@ class Main_window(QMainWindow, main_ui):
                         self.sale_button_flag = "no"
                     return
 
-                Library_db.cur.execute(f"SELECT sale_price, book_name, amount FROM Library.books "
-                                       f"WHERE(book_code = '{book_code}')")
+                Library_db.cur.execute(
+                    f"SELECT sale_price, book_name, amount FROM Library.books "
+                    f"WHERE(book_code = '{book_code}')"
+                )
                 result = Library_db.cur.fetchone()
 
                 if result:
@@ -3249,7 +3536,9 @@ class Main_window(QMainWindow, main_ui):
 
                     if amount == 0:
                         self.sale_button_flag = "yes"
-                        self.message_close("كىتاپ سېتىش", "بۇ كىتاپتىن سىستىمىدا قالمىدى!")
+                        self.message_close(
+                            "كىتاپ سېتىش", "بۇ كىتاپتىن سىستىمىدا قالمىدى!"
+                        )
 
                         self.lineEdit.setFocus()
                         if self.sale_button_flag == "yes":
@@ -3258,9 +3547,11 @@ class Main_window(QMainWindow, main_ui):
 
                     if self.lineEdit_4.text() == "":
 
-                        Library_db.cur.execute("INSERT INTO Library.days_record_for_view(book_name ,amount, "
-                                               "sale_price, total_price)"
-                                               f"VALUES('{book_name}', '1','{sale_price}', '{sale_price}')")
+                        Library_db.cur.execute(
+                            "INSERT INTO Library.days_record_for_view(book_name ,amount, "
+                            "sale_price, total_price)"
+                            f"VALUES('{book_name}', '1','{sale_price}', '{sale_price}')"
+                        )
                         Library_db.db.commit()
 
                         self.view_book_details()
@@ -3268,7 +3559,9 @@ class Main_window(QMainWindow, main_ui):
                         balance = self.lineEdit_4.text()
                         if int(balance) < 0:
                             self.sale_button_flag = "yes"
-                            self.message_close("كىتاپ سېتىش", "تۆلەنگەن پۇل يىتەرلىك ئەمەس!")
+                            self.message_close(
+                                "كىتاپ سېتىش", "تۆلەنگەن پۇل يىتەرلىك ئەمەس!"
+                            )
 
                             if self.sale_button_flag == "yes":
                                 self.sale_button_flag = "no"
@@ -3280,7 +3573,9 @@ class Main_window(QMainWindow, main_ui):
                         balance = self.lineEdit_4.text()
                         if int(balance) < 0:
                             self.sale_button_flag = "yes"
-                            self.message_close("كىتاپ سېتىش", "تۆلەنگەن پۇل يىتەرلىك ئەمەس!")
+                            self.message_close(
+                                "كىتاپ سېتىش", "تۆلەنگەن پۇل يىتەرلىك ئەمەس!"
+                            )
 
                             if self.sale_button_flag == "yes":
                                 self.sale_button_flag = "no"
@@ -3288,15 +3583,21 @@ class Main_window(QMainWindow, main_ui):
                             self.update_days_sale_record()
                     else:
                         self.sale_button_flag = "yes"
-                        self.message_close("كىتاپ سېتىش", "كىتاپ كود نۇمۇرىدا"
-                                                          " خاتالىق بار ياكى بۇ كىتاپ سىستىمىغا كىرگۈزۈلمىگەن!")
+                        self.message_close(
+                            "كىتاپ سېتىش",
+                            "كىتاپ كود نۇمۇرىدا"
+                            " خاتالىق بار ياكى بۇ كىتاپ سىستىمىغا كىرگۈزۈلمىگەن!",
+                        )
 
                         if self.sale_button_flag == "yes":
                             self.sale_button_flag = "no"
                 else:
                     self.sale_button_flag = "yes"
-                    self.message_close("كىتاپ سېتىش", "كىتاپ كود نۇمۇرىدا"
-                                                      " خاتالىق بار ياكى بۇ كىتاپ سىستىمىغا كىرگۈزۈلمىگەن!")
+                    self.message_close(
+                        "كىتاپ سېتىش",
+                        "كىتاپ كود نۇمۇرىدا"
+                        " خاتالىق بار ياكى بۇ كىتاپ سىستىمىغا كىرگۈزۈلمىگەن!",
+                    )
 
                     if self.sale_button_flag == "yes":
                         self.sale_button_flag = "no"
@@ -3309,28 +3610,48 @@ class Main_window(QMainWindow, main_ui):
         Library_db.cur.execute("SELECT * FROM Library.days_record_for_view")
         result = Library_db.cur.fetchall()
 
-        column_names_list = ["book_name", "amount", "sale_price", "total_price", "salesman", "date_time"]
+        column_names_list = [
+            "book_name",
+            "amount",
+            "sale_price",
+            "total_price",
+            "salesman",
+            "date_time",
+        ]
         self.tableWidget.setColumnCount(len(column_names_list))
 
         for row, data in enumerate(result, start=1):
-            book_name, amount, sale_price, total_price = data[0], data[1], data[2], data[3]
+            book_name, amount, sale_price, total_price = (
+                data[0],
+                data[1],
+                data[2],
+                data[3],
+            )
             salesman = "ziya"
-            Library_db.cur.execute(f"SELECT amount FROM Library.books WHERE(book_name = '{book_name}')")
+            Library_db.cur.execute(
+                f"SELECT amount FROM Library.books WHERE(book_name = '{book_name}')"
+            )
             stock_amount = Library_db.cur.fetchone()
             left_amount = int(stock_amount[0]) - int(amount)
 
-            Library_db.cur.execute(f"UPDATE Library.books SET amount = '{left_amount}' "
-                                   f"WHERE(book_name = '{book_name}')")
+            Library_db.cur.execute(
+                f"UPDATE Library.books SET amount = '{left_amount}' "
+                f"WHERE(book_name = '{book_name}')"
+            )
             Library_db.db.commit()
 
             date_time = self.full_date_time
 
-            list_of_value = [[book_name, amount, sale_price, total_price, salesman, date_time]]
+            list_of_value = [
+                [book_name, amount, sale_price, total_price, salesman, date_time]
+            ]
 
-            Library_db.cur.execute(f"INSERT INTO Library.days_record_for_sale(book_name, amount, "
-                                   f"sale_price, total_price, salesman, date_time)VALUES('{book_name}', "
-                                   f"'{amount}','{sale_price}', '{total_price}', "
-                                   f"'{salesman}', '{date_time}')")
+            Library_db.cur.execute(
+                f"INSERT INTO Library.days_record_for_sale(book_name, amount, "
+                f"sale_price, total_price, salesman, date_time)VALUES('{book_name}', "
+                f"'{amount}','{sale_price}', '{total_price}', "
+                f"'{salesman}', '{date_time}')"
+            )
             Library_db.db.commit()
 
             table_row_len = self.tableWidget.rowCount()
@@ -3344,11 +3665,15 @@ class Main_window(QMainWindow, main_ui):
         self.tableWidget.resizeColumnsToContents()
 
         Library_db.cur.execute("DROP TABLE IF EXISTS Library.days_record_for_view")
-        Library_db.cur.execute("CREATE table IF NOT EXISTS Library.days_record_for_view(book_name char(255), "
-                               "amount int, sale_price int, "
-                               "total_price int, book_id int AUTO_INCREMENT, PRIMARY KEY(book_id))")
+        Library_db.cur.execute(
+            "CREATE table IF NOT EXISTS Library.days_record_for_view(book_name char(255), "
+            "amount int, sale_price int, "
+            "total_price int, book_id int AUTO_INCREMENT, PRIMARY KEY(book_id))"
+        )
 
-        Library_db.cur.execute("ALTER TABLE Library.days_record_for_view AUTO_INCREMENT = 1")
+        Library_db.cur.execute(
+            "ALTER TABLE Library.days_record_for_view AUTO_INCREMENT = 1"
+        )
 
         self.lineEdit.clear()
         self.lineEdit_2.clear()
@@ -3369,15 +3694,30 @@ class Main_window(QMainWindow, main_ui):
         Library_db.cur.execute("SELECT * FROM Library.days_record_for_sale")
         result = Library_db.cur.fetchall()
 
-        column_names_list = ["book_name", "amount", "sale_price", "total_price", "salesman", "date_time"]
+        column_names_list = [
+            "book_name",
+            "amount",
+            "sale_price",
+            "total_price",
+            "salesman",
+            "date_time",
+        ]
         self.tableWidget.setColumnCount(len(column_names_list))
 
         for row, data in enumerate(result, start=1):
-            book_name, amount, sale_price, total_price, salesman = data[0], data[1], data[2], data[3], data[4]
+            book_name, amount, sale_price, total_price, salesman = (
+                data[0],
+                data[1],
+                data[2],
+                data[3],
+                data[4],
+            )
 
             date_time = data[5]
 
-            list_of_value = [[book_name, amount, sale_price, total_price, salesman, date_time]]
+            list_of_value = [
+                [book_name, amount, sale_price, total_price, salesman, date_time]
+            ]
 
             table_row_len = self.tableWidget.rowCount()
             self.tableWidget.setRowCount(table_row_len + 1)
@@ -3412,11 +3752,15 @@ class Main_window(QMainWindow, main_ui):
         if i.text() == "ھەئە":
             Library_db.cur.execute("DROP TABLE IF EXISTS Library.days_record_for_view")
             Library_db.db.commit()
-            Library_db.cur.execute("CREATE table IF NOT EXISTS Library.days_record_for_view(book_name char(255), "
-                                   "amount int, sale_price int, total_price int, book_id int AUTO_INCREMENT, "
-                                   "PRIMARY KEY(book_id))")
+            Library_db.cur.execute(
+                "CREATE table IF NOT EXISTS Library.days_record_for_view(book_name char(255), "
+                "amount int, sale_price int, total_price int, book_id int AUTO_INCREMENT, "
+                "PRIMARY KEY(book_id))"
+            )
 
-            Library_db.cur.execute("ALTER TABLE Library.days_record_for_view AUTO_INCREMENT = 1")
+            Library_db.cur.execute(
+                "ALTER TABLE Library.days_record_for_view AUTO_INCREMENT = 1"
+            )
 
             self.tableWidget.setVisible(True)
             self.tableWidget_10.setVisible(False)
@@ -3451,7 +3795,9 @@ class Main_window(QMainWindow, main_ui):
             return
         client_no = self.lineEdit_20.text()
         if client_no == "":
-            self.message_close("كىتاپ ئارىيەت بىرىش", "ئاۋال ئەزالىق نۇمۇرىڭىزنى كىرگۈزۈڭ!")
+            self.message_close(
+                "كىتاپ ئارىيەت بىرىش", "ئاۋال ئەزالىق نۇمۇرىڭىزنى كىرگۈزۈڭ!"
+            )
             self.lineEdit_20.clear()
 
             self.tableWidget_2.setRowCount(0)
@@ -3459,7 +3805,9 @@ class Main_window(QMainWindow, main_ui):
             self.lineEdit_21.clear()
             self.lineEdit_20.setFocus()
             return
-        Library_db.cur.execute(f"SELECT client_name FROM Library.client WHERE(client_no = '{client_no}')")
+        Library_db.cur.execute(
+            f"SELECT client_name FROM Library.client WHERE(client_no = '{client_no}')"
+        )
         client_name = Library_db.cur.fetchone()
         if client_name:
             client_name = client_name[0]
@@ -3482,7 +3830,9 @@ class Main_window(QMainWindow, main_ui):
             if self.lineEdit_20.text().isspace():
                 if self.tabWidget_2.currentIndex() == 1:
                     self.re_press_flag = "yes"
-                    self.message_close("كىتاپ ئارىيەت بىرىش", "ئاۋال ئەزالىق نۇمۇرىڭىزنى كىرگۈزۈڭ!")
+                    self.message_close(
+                        "كىتاپ ئارىيەت بىرىش", "ئاۋال ئەزالىق نۇمۇرىڭىزنى كىرگۈزۈڭ!"
+                    )
 
                     if self.re_press_flag == "yes":
                         self.re_press_flag = "no"
@@ -3495,7 +3845,9 @@ class Main_window(QMainWindow, main_ui):
             if self.lineEdit_20.text():
                 if self.tabWidget_2.currentIndex() == 1:
                     self.re_press_flag = "yes"
-                    self.message_close("كىتاپ ئارىيەت بىرىش", "ئەزالىق نۇمۇرىڭىزنى توغرا كىرگۈزۈڭ!")
+                    self.message_close(
+                        "كىتاپ ئارىيەت بىرىش", "ئەزالىق نۇمۇرىڭىزنى توغرا كىرگۈزۈڭ!"
+                    )
 
                     if self.re_press_flag == "yes":
                         self.re_press_flag = "no"
@@ -3508,7 +3860,9 @@ class Main_window(QMainWindow, main_ui):
         client_no = self.lineEdit_20.text()
         if client_no == "" or client_no.isspace():
             self.lend_press_flag = "yes"
-            self.message_close("كىتاپ ئارىيەت بىرىش", "ئاۋال ئەزالىق نۇمۇرىڭىزنى كىرگۈزۈڭ!")
+            self.message_close(
+                "كىتاپ ئارىيەت بىرىش", "ئاۋال ئەزالىق نۇمۇرىڭىزنى كىرگۈزۈڭ!"
+            )
 
             self.tableWidget_2.setRowCount(0)
             self.lineEdit_5.clear()
@@ -3517,7 +3871,9 @@ class Main_window(QMainWindow, main_ui):
             if self.lend_press_flag == "yes":
                 self.lend_press_flag = "no"
             return
-        Library_db.cur.execute(f"SELECT client_name FROM Library.client WHERE(client_no = '{client_no}')")
+        Library_db.cur.execute(
+            f"SELECT client_name FROM Library.client WHERE(client_no = '{client_no}')"
+        )
         client_name = Library_db.cur.fetchone()
         if client_name:
             self.lineEdit_21.setText(client_name[0])
@@ -3527,7 +3883,9 @@ class Main_window(QMainWindow, main_ui):
                 self.lend_by_book_name()
         else:
             self.lend_press_flag = "yes"
-            self.message_close("كىتاپ ئارىيەت بىرىش", "ئەزالىق نۇمۇرىڭىزنى توغرا كىرگۈزۈڭ!")
+            self.message_close(
+                "كىتاپ ئارىيەت بىرىش", "ئەزالىق نۇمۇرىڭىزنى توغرا كىرگۈزۈڭ!"
+            )
             self.tableWidget_2.setRowCount(0)
             self.lineEdit_5.clear()
             self.lineEdit_21.clear()
@@ -3536,317 +3894,445 @@ class Main_window(QMainWindow, main_ui):
                 self.lend_press_flag = "no"
 
     def lend_by_book_code(self):
-            book_code = self.lineEdit_5.text()
-            if book_code == "" or book_code.isspace():
-                self.message_close("كىتاپ ئارىيەت بىرىش", "ئالدى بىلەن كىتاپ كود نومۇرىنى كىرگۈزۈڭ!")
-                self.lineEdit_5.clear()
-            else:
-                Library_db.cur.execute(f"SELECT book_name FROM Library.books WHERE(book_code = '{book_code}')")
-                result = Library_db.cur.fetchone()
+        book_code = self.lineEdit_5.text()
+        if book_code == "" or book_code.isspace():
+            self.message_close(
+                "كىتاپ ئارىيەت بىرىش", "ئالدى بىلەن كىتاپ كود نومۇرىنى كىرگۈزۈڭ!"
+            )
+            self.lineEdit_5.clear()
+        else:
+            Library_db.cur.execute(
+                f"SELECT book_name FROM Library.books WHERE(book_code = '{book_code}')"
+            )
+            result = Library_db.cur.fetchone()
 
-                if result:
-                    client_no = self.lineEdit_20.text()
-                    book_name = result[0]
-                    lend_type = self.comboBox.currentText()
-                    days = self.comboBox_2.currentText()
-                    return_date_time = self.now.addDays(int(days)).toString("dd-MM-yyyy")
-                    manager_name = "ziya"
-                    start_date_time = self.now.toString("dd-MM-yyyy")
+            if result:
+                client_no = self.lineEdit_20.text()
+                book_name = result[0]
+                lend_type = self.comboBox.currentText()
+                days = self.comboBox_2.currentText()
+                return_date_time = self.now.addDays(int(days)).toString("dd-MM-yyyy")
+                manager_name = "ziya"
+                start_date_time = self.now.toString("dd-MM-yyyy")
 
-                    if lend_type == "قايتۇرۇش":
+                if lend_type == "قايتۇرۇش":
 
-                        Library_db.cur.execute(f"SELECT type FROM client_info.{client_no} WHERE"
-                                               f"(book_name = '{book_name}')")
+                    Library_db.cur.execute(
+                        f"SELECT type FROM client_info.{client_no} WHERE"
+                        f"(book_name = '{book_name}')"
+                    )
+                    result = Library_db.cur.fetchall()
+                    if not result:
+                        self.message_close(
+                            "كىتاپ ئارىيەت بىرىش",
+                            "بۇ كىتاپ بۇرۇن" " سىزگە ئارىيەت بىرلىپ باقمىغانكەن!",
+                        )
+                        return
+                    last_book_type = result[len(result) - 1][0]
+                    if (
+                        last_book_type == "ئارىيەت بىرىش"
+                        or last_book_type == "ئۇزارتىش"
+                    ):
+                        Library_db.cur.execute(
+                            f"SELECT start_date_time FROM client_info.{client_no} WHERE"
+                            f"(book_name = '{book_name}')"
+                        )
                         result = Library_db.cur.fetchall()
-                        if not result:
-                            self.message_close("كىتاپ ئارىيەت بىرىش", "بۇ كىتاپ بۇرۇن"
-                                                                      " سىزگە ئارىيەت بىرلىپ باقمىغانكەن!")
-                            return
-                        last_book_type = result[len(result) - 1][0]
-                        if last_book_type == "ئارىيەت بىرىش" or last_book_type == "ئۇزارتىش":
-                            Library_db.cur.execute(f"SELECT start_date_time FROM client_info.{client_no} WHERE"
-                                                   f"(book_name = '{book_name}')")
-                            result = Library_db.cur.fetchall()
 
-                            result = result[len(result) - 1]
-                            start_date_time = result[0]
-                            date = start_date_time.split("-")
-                            date = QDateTime(int(date[2]), int(date[1]), int(date[0]), 0, 0, 0, 0, 0)
-                            now = QDateTime().currentDateTime()
-                            days = date.daysTo(now)
-                            return_date_time = self.now.toString("dd-MM-yyyy")
+                        result = result[len(result) - 1]
+                        start_date_time = result[0]
+                        date = start_date_time.split("-")
+                        date = QDateTime(
+                            int(date[2]), int(date[1]), int(date[0]), 0, 0, 0, 0, 0
+                        )
+                        now = QDateTime().currentDateTime()
+                        days = date.daysTo(now)
+                        return_date_time = self.now.toString("dd-MM-yyyy")
 
-                            Library_db.cur.execute(f"INSERT INTO client_info.{client_no}(book_name ,type, days, "
-                                                   f"start_date_time, "
-                                                   f"return_date_time, manager) VALUES('{book_name}', '{lend_type}', "
-                                                   f"'{days}', "
-                                                   f"'{start_date_time}', '{return_date_time}', '{manager_name}')")
-                            Library_db.db.commit()
-                            self.update_lend_record()
+                        Library_db.cur.execute(
+                            f"INSERT INTO client_info.{client_no}(book_name ,type, days, "
+                            f"start_date_time, "
+                            f"return_date_time, manager) VALUES('{book_name}', '{lend_type}', "
+                            f"'{days}', "
+                            f"'{start_date_time}', '{return_date_time}', '{manager_name}')"
+                        )
+                        Library_db.db.commit()
+                        self.update_lend_record()
 
-                            Library_db.cur.execute(f"SELECT amount FROM Library.books WHERE(book_name = '{book_name}')")
-                            amount = Library_db.cur.fetchone()
-                            # if last_book_type == "ئارىيەت بىرىش":
-                            amount = int(amount[0]) + 1
+                        Library_db.cur.execute(
+                            f"SELECT amount FROM Library.books WHERE(book_name = '{book_name}')"
+                        )
+                        amount = Library_db.cur.fetchone()
+                        # if last_book_type == "ئارىيەت بىرىش":
+                        amount = int(amount[0]) + 1
 
-                            Library_db.cur.execute(f"UPDATE Library.books SET amount = '{amount}' WHERE"
-                                                   f"(book_name = '{book_name}')")
-                            Library_db.db.commit()
-                            self.show_book_for_view()
-                            return
-                        else:
+                        Library_db.cur.execute(
+                            f"UPDATE Library.books SET amount = '{amount}' WHERE"
+                            f"(book_name = '{book_name}')"
+                        )
+                        Library_db.db.commit()
+                        self.show_book_for_view()
+                        return
+                    else:
 
-                            self.message_close("كىتاپ ئارىيەت بىرىش", "بۇ كىتاپ بۇرۇن سىزگە ئارىيەت"
-                                                                      " بىرلىپ باقمىغانكەن ياكى قايتۇرۇپ بوپتىكەنسىز!")
+                        self.message_close(
+                            "كىتاپ ئارىيەت بىرىش",
+                            "بۇ كىتاپ بۇرۇن سىزگە ئارىيەت"
+                            " بىرلىپ باقمىغانكەن ياكى قايتۇرۇپ بوپتىكەنسىز!",
+                        )
 
-                            return
-                    elif lend_type == "ئۇزارتىش":
-                        Library_db.cur.execute(f"SELECT type FROM client_info.{client_no} WHERE"
-                                               f"(book_name = '{book_name}')")
-                        result = Library_db.cur.fetchall()
-                        if not result:
-                            self.message_close("كىتاپ ئارىيەت بىرىش", "بۇ كىتاپ بۇرۇن"
-                                                                      " سىزگە ئارىيەت بىرلىپ باقمىغانكەن!")
+                        return
+                elif lend_type == "ئۇزارتىش":
+                    Library_db.cur.execute(
+                        f"SELECT type FROM client_info.{client_no} WHERE"
+                        f"(book_name = '{book_name}')"
+                    )
+                    result = Library_db.cur.fetchall()
+                    if not result:
+                        self.message_close(
+                            "كىتاپ ئارىيەت بىرىش",
+                            "بۇ كىتاپ بۇرۇن" " سىزگە ئارىيەت بىرلىپ باقمىغانكەن!",
+                        )
 
-                            return
+                        return
 
-                        last_book_type = result[len(result) - 1][0]
-                        if last_book_type == "ئارىيەت بىرىش" or last_book_type == "ئۇزارتىش":
+                    last_book_type = result[len(result) - 1][0]
+                    if (
+                        last_book_type == "ئارىيەت بىرىش"
+                        or last_book_type == "ئۇزارتىش"
+                    ):
 
-                            Library_db.cur.execute(f"INSERT INTO client_info.{client_no}(book_name ,type, days, "
-                                                   f"start_date_time, "
-                                                   f"return_date_time, manager) VALUES('{book_name}', '{lend_type}', "
-                                                   f"'{days}', "
-                                                   f"'{start_date_time}', '{return_date_time}', '{manager_name}')")
-                            Library_db.db.commit()
-                            self.update_lend_record()
-
-                        else:
-                            self.message_close("كىتاپ ئارىيەت بىرىش", "بۇ كىتاپ بۇرۇن سىزگە ئارىيەت"
-                                                                      " بىرلىپ باقمىغانكەن ياكى قايتۇرۇپ بىرپتىكەنسىز!")
-
-                            return
+                        Library_db.cur.execute(
+                            f"INSERT INTO client_info.{client_no}(book_name ,type, days, "
+                            f"start_date_time, "
+                            f"return_date_time, manager) VALUES('{book_name}', '{lend_type}', "
+                            f"'{days}', "
+                            f"'{start_date_time}', '{return_date_time}', '{manager_name}')"
+                        )
+                        Library_db.db.commit()
+                        self.update_lend_record()
 
                     else:
-                        Library_db.cur.execute(f"SELECT type FROM client_info.{client_no} WHERE"
-                                               f"(book_name = '{book_name}')")
+                        self.message_close(
+                            "كىتاپ ئارىيەت بىرىش",
+                            "بۇ كىتاپ بۇرۇن سىزگە ئارىيەت"
+                            " بىرلىپ باقمىغانكەن ياكى قايتۇرۇپ بىرپتىكەنسىز!",
+                        )
 
-                        result = Library_db.cur.fetchall()
-                        if result:
-                            last_book_type = result[len(result) - 1][0]
-                            if last_book_type == "ئارىيەت بىرىش" or last_book_type == "ئۇزارتىش":
-                                self.message_close("كىتاپ ئارىيەت بىرىش", "بۇ كىتاپنى ئارىيەت"
-                                                                          " ئېلىپ بوپتىكەنسىز، يەنە ئارىيەت ئالالمايسىز،"
-                                                                          " ئۇزارتسىڭىز"
-                                                                          " ياكى قايتۇرۇپ قايتا ئالسىڭىز بولىدۇ!")
-                                return
-                            Library_db.cur.execute(f"SELECT amount FROM Library.books WHERE(book_code = '{book_code}')")
-                            amount = Library_db.cur.fetchone()
-                            amount = int(amount[0]) - 1
-
-                            if amount < 1:
-                                self.message_close("كىتاپ ئارىيەت بىرىش", "سىستىمىدا بۇ كىتاپتىن"
-                                                                          " ئارىيەت بىرىشكە يىتەرلىك مىقداردا قالمىدى!")
-                                return
-
-                            Library_db.cur.execute(f"UPDATE Library.books SET amount = '{amount}' WHERE"
-                                                   f"(book_name = '{book_name}')")
-                            # Library_db.db.commit()
-                            Library_db.cur.execute(f"INSERT INTO client_info.{client_no}(book_name, type, days, "
-                                                   f"start_date_time, "
-                                                   f"return_date_time, manager) VALUES('{book_name}', '{lend_type}', "
-                                                   f"'{days}', '{start_date_time}', '{return_date_time}', "
-                                                   f"'{manager_name}')")
-                            Library_db.db.commit()
-                            self.update_lend_record()
-                            self.show_book_for_view()
-                            return
-
-                        else:
-                            Library_db.cur.execute(f"SELECT amount FROM Library.books WHERE(book_code = '{book_code}')")
-                            amount = Library_db.cur.fetchone()
-                            amount = int(amount[0]) - 1
-
-                            if amount < 1:
-                                self.message_close("كىتاپ ئارىيەت بىرىش", "سىستىمىدا بۇ كىتاپتىن"
-                                                                          " ئارىيەت بىرىشكە يىتەرلىك مىقداردا قالمىدى!")
-                                return
-
-                            Library_db.cur.execute(f"UPDATE Library.books SET amount = '{amount}' WHERE"
-                                                   f"(book_name = '{book_name}')")
-
-                            # Library_db.db.commit()
-                            Library_db.cur.execute(f"INSERT INTO client_info.{client_no}(book_name, type, days, "
-                                                   f"start_date_time, "
-                                                   f"return_date_time, manager) VALUES('{book_name}', '{lend_type}', "
-                                                   f"'{days}', '{start_date_time}', '{return_date_time}', "
-                                                   f"'{manager_name}')")
-                            Library_db.db.commit()
-                            self.update_lend_record()
-                            self.show_book_for_view()
-                            return
+                        return
 
                 else:
-                    self.message_close("كىتاپ ئارىيەت بىرىش",
-                                       "كىتاپ كود نومۇرىدا خاتالىق بار ياكى بۇ كىتاپ سىستىمىغا كىرگۈزۈلمىگەن"
-                                       " كىتاپ كود نومۇرىنى توغۇرلاڭ ياكى سىستىمىغا كىرگۈزۈپ ئاندىن داۋاملاشتۇرۇڭ!")
+                    Library_db.cur.execute(
+                        f"SELECT type FROM client_info.{client_no} WHERE"
+                        f"(book_name = '{book_name}')"
+                    )
+
+                    result = Library_db.cur.fetchall()
+                    if result:
+                        last_book_type = result[len(result) - 1][0]
+                        if (
+                            last_book_type == "ئارىيەت بىرىش"
+                            or last_book_type == "ئۇزارتىش"
+                        ):
+                            self.message_close(
+                                "كىتاپ ئارىيەت بىرىش",
+                                "بۇ كىتاپنى ئارىيەت"
+                                " ئېلىپ بوپتىكەنسىز، يەنە ئارىيەت ئالالمايسىز،"
+                                " ئۇزارتسىڭىز"
+                                " ياكى قايتۇرۇپ قايتا ئالسىڭىز بولىدۇ!",
+                            )
+                            return
+                        Library_db.cur.execute(
+                            f"SELECT amount FROM Library.books WHERE(book_code = '{book_code}')"
+                        )
+                        amount = Library_db.cur.fetchone()
+                        amount = int(amount[0]) - 1
+
+                        if amount < 1:
+                            self.message_close(
+                                "كىتاپ ئارىيەت بىرىش",
+                                "سىستىمىدا بۇ كىتاپتىن"
+                                " ئارىيەت بىرىشكە يىتەرلىك مىقداردا قالمىدى!",
+                            )
+                            return
+
+                        Library_db.cur.execute(
+                            f"UPDATE Library.books SET amount = '{amount}' WHERE"
+                            f"(book_name = '{book_name}')"
+                        )
+                        # Library_db.db.commit()
+                        Library_db.cur.execute(
+                            f"INSERT INTO client_info.{client_no}(book_name, type, days, "
+                            f"start_date_time, "
+                            f"return_date_time, manager) VALUES('{book_name}', '{lend_type}', "
+                            f"'{days}', '{start_date_time}', '{return_date_time}', "
+                            f"'{manager_name}')"
+                        )
+                        Library_db.db.commit()
+                        self.update_lend_record()
+                        self.show_book_for_view()
+                        return
+
+                    else:
+                        Library_db.cur.execute(
+                            f"SELECT amount FROM Library.books WHERE(book_code = '{book_code}')"
+                        )
+                        amount = Library_db.cur.fetchone()
+                        amount = int(amount[0]) - 1
+
+                        if amount < 1:
+                            self.message_close(
+                                "كىتاپ ئارىيەت بىرىش",
+                                "سىستىمىدا بۇ كىتاپتىن"
+                                " ئارىيەت بىرىشكە يىتەرلىك مىقداردا قالمىدى!",
+                            )
+                            return
+
+                        Library_db.cur.execute(
+                            f"UPDATE Library.books SET amount = '{amount}' WHERE"
+                            f"(book_name = '{book_name}')"
+                        )
+
+                        # Library_db.db.commit()
+                        Library_db.cur.execute(
+                            f"INSERT INTO client_info.{client_no}(book_name, type, days, "
+                            f"start_date_time, "
+                            f"return_date_time, manager) VALUES('{book_name}', '{lend_type}', "
+                            f"'{days}', '{start_date_time}', '{return_date_time}', "
+                            f"'{manager_name}')"
+                        )
+                        Library_db.db.commit()
+                        self.update_lend_record()
+                        self.show_book_for_view()
+                        return
+
+            else:
+                self.message_close(
+                    "كىتاپ ئارىيەت بىرىش",
+                    "كىتاپ كود نومۇرىدا خاتالىق بار ياكى بۇ كىتاپ سىستىمىغا كىرگۈزۈلمىگەن"
+                    " كىتاپ كود نومۇرىنى توغۇرلاڭ ياكى سىستىمىغا كىرگۈزۈپ ئاندىن داۋاملاشتۇرۇڭ!",
+                )
 
     def lend_by_book_name(self):
-            book_name = self.lineEdit_5.text()
-            if book_name == "" or book_name.isspace():
-                self.message_close("كىتاپ ئارىيەت بىرىش", "ئالدى بىلەن كىتاپ ئىسمىنى كىرگۈزۈڭ!")
-                self.lineEdit_5.clear()
+        book_name = self.lineEdit_5.text()
+        if book_name == "" or book_name.isspace():
+            self.message_close(
+                "كىتاپ ئارىيەت بىرىش", "ئالدى بىلەن كىتاپ ئىسمىنى كىرگۈزۈڭ!"
+            )
+            self.lineEdit_5.clear()
 
-            else:
-                Library_db.cur.execute(f"SELECT book_name FROM Library.books WHERE(book_name = '{book_name}')")
-                result = Library_db.cur.fetchone()
+        else:
+            Library_db.cur.execute(
+                f"SELECT book_name FROM Library.books WHERE(book_name = '{book_name}')"
+            )
+            result = Library_db.cur.fetchone()
 
-                if result:
-                    client_no = self.lineEdit_20.text()
-                    book_name = result[0]
-                    lend_type = self.comboBox.currentText()
-                    days = self.comboBox_2.currentText()
-                    return_date_time = self.now.addDays(int(days)).toString("dd-MM-yyyy")
-                    manager_name = "ziya"
-                    start_date_time = self.now.toString("dd-MM-yyyy")
+            if result:
+                client_no = self.lineEdit_20.text()
+                book_name = result[0]
+                lend_type = self.comboBox.currentText()
+                days = self.comboBox_2.currentText()
+                return_date_time = self.now.addDays(int(days)).toString("dd-MM-yyyy")
+                manager_name = "ziya"
+                start_date_time = self.now.toString("dd-MM-yyyy")
 
-                    if lend_type == "قايتۇرۇش":
+                if lend_type == "قايتۇرۇش":
 
-                        Library_db.cur.execute(f"SELECT type FROM client_info.{client_no} WHERE"
-                                               f"(book_name = '{book_name}')")
+                    Library_db.cur.execute(
+                        f"SELECT type FROM client_info.{client_no} WHERE"
+                        f"(book_name = '{book_name}')"
+                    )
+                    result = Library_db.cur.fetchall()
+                    if not result:
+                        self.message_close(
+                            "كىتاپ ئارىيەت بىرىش",
+                            "بۇ كىتاپ بۇرۇن" " سىزگە ئارىيەت بىرلىپ باقمىغانكەن!",
+                        )
+                        return
+                    last_book_type = result[len(result) - 1][0]
+                    if (
+                        last_book_type == "ئارىيەت بىرىش"
+                        or last_book_type == "ئۇزارتىش"
+                    ):
+                        Library_db.cur.execute(
+                            f"SELECT start_date_time FROM client_info.{client_no} WHERE"
+                            f"(book_name = '{book_name}')"
+                        )
                         result = Library_db.cur.fetchall()
-                        if not result:
-                            self.message_close("كىتاپ ئارىيەت بىرىش", "بۇ كىتاپ بۇرۇن"
-                                                                      " سىزگە ئارىيەت بىرلىپ باقمىغانكەن!")
-                            return
-                        last_book_type = result[len(result) - 1][0]
-                        if last_book_type == "ئارىيەت بىرىش" or last_book_type == "ئۇزارتىش":
-                            Library_db.cur.execute(f"SELECT start_date_time FROM client_info.{client_no} WHERE"
-                                                   f"(book_name = '{book_name}')")
-                            result = Library_db.cur.fetchall()
 
-                            result = result[len(result) - 1]
-                            start_date_time = result[0]
-                            date = start_date_time.split("-")
-                            date = QDateTime(int(date[2]), int(date[1]), int(date[0]), 0, 0, 0, 0, 0)
-                            now = QDateTime().currentDateTime()
-                            days = date.daysTo(now)
-                            return_date_time = self.now.toString("dd-MM-yyyy")
+                        result = result[len(result) - 1]
+                        start_date_time = result[0]
+                        date = start_date_time.split("-")
+                        date = QDateTime(
+                            int(date[2]), int(date[1]), int(date[0]), 0, 0, 0, 0, 0
+                        )
+                        now = QDateTime().currentDateTime()
+                        days = date.daysTo(now)
+                        return_date_time = self.now.toString("dd-MM-yyyy")
 
-                            Library_db.cur.execute(f"INSERT INTO client_info.{client_no}(book_name ,type, days, "
-                                                   f"start_date_time, "
-                                                   f"return_date_time, manager) VALUES('{book_name}', '{lend_type}', "
-                                                   f"'{days}', "
-                                                   f"'{start_date_time}', '{return_date_time}', '{manager_name}')")
-                            Library_db.db.commit()
-                            self.update_lend_record()
+                        Library_db.cur.execute(
+                            f"INSERT INTO client_info.{client_no}(book_name ,type, days, "
+                            f"start_date_time, "
+                            f"return_date_time, manager) VALUES('{book_name}', '{lend_type}', "
+                            f"'{days}', "
+                            f"'{start_date_time}', '{return_date_time}', '{manager_name}')"
+                        )
+                        Library_db.db.commit()
+                        self.update_lend_record()
 
-                            Library_db.cur.execute(f"SELECT amount FROM Library.books WHERE(book_name = '{book_name}')")
-                            amount = Library_db.cur.fetchone()
-                            # if last_book_type == "ئارىيەت بىرىش" or last_book_type == "ئۇزارتىش":
-                            amount = int(amount[0]) + 1
+                        Library_db.cur.execute(
+                            f"SELECT amount FROM Library.books WHERE(book_name = '{book_name}')"
+                        )
+                        amount = Library_db.cur.fetchone()
+                        # if last_book_type == "ئارىيەت بىرىش" or last_book_type == "ئۇزارتىش":
+                        amount = int(amount[0]) + 1
 
-                            Library_db.cur.execute(f"UPDATE Library.books SET amount = '{amount}' WHERE"
-                                                   f"(book_name = '{book_name}')")
-                            Library_db.db.commit()
-                            self.show_book_for_view()
-                            return
-
-                        else:
-
-                            self.message_close("كىتاپ ئارىيەت بىرىش", "بۇ كىتاپ بۇرۇن سىزگە ئارىيەت"
-                                                                      " بىرلىپ باقمىغانكەن ياكى قايتۇرۇپ بوپتىكەنسىز!")
-
-                            return
-                    elif lend_type == "ئۇزارتىش":
-                        Library_db.cur.execute(f"SELECT type FROM client_info.{client_no} WHERE"
-                                               f"(book_name = '{book_name}')")
-                        result = Library_db.cur.fetchall()
-                        if not result:
-                            self.message_close("كىتاپ ئارىيەت بىرىش", "بۇ كىتاپ بۇرۇن"
-                                                                      " سىزگە ئارىيەت بىرلىپ باقمىغانكەن!")
-
-                            return
-
-                        last_book_type = result[len(result) - 1][0]
-                        if last_book_type == "ئارىيەت بىرىش" or last_book_type == "ئۇزارتىش":
-
-                            Library_db.cur.execute(f"INSERT INTO client_info.{client_no}(book_name ,type, days, "
-                                                   f"start_date_time, "
-                                                   f"return_date_time, manager) VALUES('{book_name}', '{lend_type}', "
-                                                   f"'{days}', "
-                                                   f"'{start_date_time}', '{return_date_time}', '{manager_name}')")
-                            Library_db.db.commit()
-                            self.update_lend_record()
-
-                        else:
-                            self.message_close("كىتاپ ئارىيەت بىرىش", "بۇ كىتاپ بۇرۇن سىزگە ئارىيەت"
-                                                                      " بىرلىپ باقمىغانكەن ياكى قايتۇرۇپ بىرپتىكەنسىز!")
-
-                            return
+                        Library_db.cur.execute(
+                            f"UPDATE Library.books SET amount = '{amount}' WHERE"
+                            f"(book_name = '{book_name}')"
+                        )
+                        Library_db.db.commit()
+                        self.show_book_for_view()
+                        return
 
                     else:
-                        Library_db.cur.execute(f"SELECT type FROM client_info.{client_no} WHERE"
-                                               f"(book_name = '{book_name}')")
-                        result = Library_db.cur.fetchall()
-                        if result:
-                            last_book_type = result[len(result) - 1][0]
-                            if last_book_type == "ئارىيەت بىرىش" or last_book_type == "ئۇزارتىش":
-                                self.message_close("كىتاپ ئارىيەت بىرىش", "بۇ كىتاپنى ئارىيەت"
-                                                                          " ئېلىپ بوپتىكەنسىز، يەنە ئارىيەت ئالالمايسىز،"
-                                                                          " ئۇزارتسىڭىز"
-                                                                          " ياكى قايتۇرۇپ قايتا ئالسىڭىز بولىدۇ!")
-                                return
-                            Library_db.cur.execute(f"SELECT amount FROM Library.books WHERE(book_name = '{book_name}')")
-                            amount = Library_db.cur.fetchone()
-                            amount = int(amount[0]) - 1
 
-                            if amount < 1:
-                                self.message_close("كىتاپ ئارىيەت بىرىش", "سىستىمىدا بۇ كىتاپتىن"
-                                                                          " ئارىيەت بىرىشكە يىتەرلىك مىقداردا قالمىدى!")
-                                return
+                        self.message_close(
+                            "كىتاپ ئارىيەت بىرىش",
+                            "بۇ كىتاپ بۇرۇن سىزگە ئارىيەت"
+                            " بىرلىپ باقمىغانكەن ياكى قايتۇرۇپ بوپتىكەنسىز!",
+                        )
 
-                            Library_db.cur.execute(f"INSERT INTO client_info.{client_no}(book_name, type, days, "
-                                                   f"start_date_time, "
-                                                   f"return_date_time, manager) VALUES('{book_name}', '{lend_type}', "
-                                                   f"'{days}', '{start_date_time}', '{return_date_time}', "
-                                                   f"'{manager_name}')")
+                        return
+                elif lend_type == "ئۇزارتىش":
+                    Library_db.cur.execute(
+                        f"SELECT type FROM client_info.{client_no} WHERE"
+                        f"(book_name = '{book_name}')"
+                    )
+                    result = Library_db.cur.fetchall()
+                    if not result:
+                        self.message_close(
+                            "كىتاپ ئارىيەت بىرىش",
+                            "بۇ كىتاپ بۇرۇن" " سىزگە ئارىيەت بىرلىپ باقمىغانكەن!",
+                        )
 
-                            Library_db.cur.execute(f"UPDATE Library.books SET amount = '{amount}' WHERE"
-                                                   f"(book_name = '{book_name}')")
-                            Library_db.db.commit()
-                            self.update_lend_record()
-                            self.show_book_for_view()
-                            return
+                        return
 
-                        else:
-                            Library_db.cur.execute(f"SELECT amount FROM Library.books WHERE(book_name = '{book_name}')")
-                            amount = Library_db.cur.fetchone()
-                            amount = int(amount[0]) - 1
+                    last_book_type = result[len(result) - 1][0]
+                    if (
+                        last_book_type == "ئارىيەت بىرىش"
+                        or last_book_type == "ئۇزارتىش"
+                    ):
 
-                            if amount < 1:
-                                self.message_close("كىتاپ ئارىيەت بىرىش", "سىستىمىدا بۇ كىتاپتىن"
-                                                                          " ئارىيەت بىرىشكە يىتەرلىك مىقداردا قالمىدى!")
-                                return
+                        Library_db.cur.execute(
+                            f"INSERT INTO client_info.{client_no}(book_name ,type, days, "
+                            f"start_date_time, "
+                            f"return_date_time, manager) VALUES('{book_name}', '{lend_type}', "
+                            f"'{days}', "
+                            f"'{start_date_time}', '{return_date_time}', '{manager_name}')"
+                        )
+                        Library_db.db.commit()
+                        self.update_lend_record()
 
-                            Library_db.db.commit()
-                            Library_db.cur.execute(f"INSERT INTO client_info.{client_no}(book_name, type, days, "
-                                                   f"start_date_time, "
-                                                   f"return_date_time, manager) VALUES('{book_name}', '{lend_type}', "
-                                                   f"'{days}', '{start_date_time}', '{return_date_time}', "
-                                                   f"'{manager_name}')")
+                    else:
+                        self.message_close(
+                            "كىتاپ ئارىيەت بىرىش",
+                            "بۇ كىتاپ بۇرۇن سىزگە ئارىيەت"
+                            " بىرلىپ باقمىغانكەن ياكى قايتۇرۇپ بىرپتىكەنسىز!",
+                        )
 
-                            Library_db.cur.execute(f"UPDATE Library.books SET amount = '{amount}' WHERE"
-                                                   f"(book_name = '{book_name}')")
-                            Library_db.db.commit()
-                            self.update_lend_record()
-                            self.show_book_for_view()
-                            return
+                        return
 
                 else:
-                    self.message_close("كىتاپ ئارىيەت بىرىش",
-                                       "كىتاپ ئىسمىدا خاتالىق بار ياكى بۇ كىتاپ سىستىمىغا كىرگۈزۈلمىگەن"
-                                       " كىتاپ ئىسمىنى توغۇرلاڭ ياكى سىستىمىغا كىرگۈزۈپ ئاندىن داۋاملاشتۇرۇڭ!")
+                    Library_db.cur.execute(
+                        f"SELECT type FROM client_info.{client_no} WHERE"
+                        f"(book_name = '{book_name}')"
+                    )
+                    result = Library_db.cur.fetchall()
+                    if result:
+                        last_book_type = result[len(result) - 1][0]
+                        if (
+                            last_book_type == "ئارىيەت بىرىش"
+                            or last_book_type == "ئۇزارتىش"
+                        ):
+                            self.message_close(
+                                "كىتاپ ئارىيەت بىرىش",
+                                "بۇ كىتاپنى ئارىيەت"
+                                " ئېلىپ بوپتىكەنسىز، يەنە ئارىيەت ئالالمايسىز،"
+                                " ئۇزارتسىڭىز"
+                                " ياكى قايتۇرۇپ قايتا ئالسىڭىز بولىدۇ!",
+                            )
+                            return
+                        Library_db.cur.execute(
+                            f"SELECT amount FROM Library.books WHERE(book_name = '{book_name}')"
+                        )
+                        amount = Library_db.cur.fetchone()
+                        amount = int(amount[0]) - 1
+
+                        if amount < 1:
+                            self.message_close(
+                                "كىتاپ ئارىيەت بىرىش",
+                                "سىستىمىدا بۇ كىتاپتىن"
+                                " ئارىيەت بىرىشكە يىتەرلىك مىقداردا قالمىدى!",
+                            )
+                            return
+
+                        Library_db.cur.execute(
+                            f"INSERT INTO client_info.{client_no}(book_name, type, days, "
+                            f"start_date_time, "
+                            f"return_date_time, manager) VALUES('{book_name}', '{lend_type}', "
+                            f"'{days}', '{start_date_time}', '{return_date_time}', "
+                            f"'{manager_name}')"
+                        )
+
+                        Library_db.cur.execute(
+                            f"UPDATE Library.books SET amount = '{amount}' WHERE"
+                            f"(book_name = '{book_name}')"
+                        )
+                        Library_db.db.commit()
+                        self.update_lend_record()
+                        self.show_book_for_view()
+                        return
+
+                    else:
+                        Library_db.cur.execute(
+                            f"SELECT amount FROM Library.books WHERE(book_name = '{book_name}')"
+                        )
+                        amount = Library_db.cur.fetchone()
+                        amount = int(amount[0]) - 1
+
+                        if amount < 1:
+                            self.message_close(
+                                "كىتاپ ئارىيەت بىرىش",
+                                "سىستىمىدا بۇ كىتاپتىن"
+                                " ئارىيەت بىرىشكە يىتەرلىك مىقداردا قالمىدى!",
+                            )
+                            return
+
+                        Library_db.db.commit()
+                        Library_db.cur.execute(
+                            f"INSERT INTO client_info.{client_no}(book_name, type, days, "
+                            f"start_date_time, "
+                            f"return_date_time, manager) VALUES('{book_name}', '{lend_type}', "
+                            f"'{days}', '{start_date_time}', '{return_date_time}', "
+                            f"'{manager_name}')"
+                        )
+
+                        Library_db.cur.execute(
+                            f"UPDATE Library.books SET amount = '{amount}' WHERE"
+                            f"(book_name = '{book_name}')"
+                        )
+                        Library_db.db.commit()
+                        self.update_lend_record()
+                        self.show_book_for_view()
+                        return
+
+            else:
+                self.message_close(
+                    "كىتاپ ئارىيەت بىرىش",
+                    "كىتاپ ئىسمىدا خاتالىق بار ياكى بۇ كىتاپ سىستىمىغا كىرگۈزۈلمىگەن"
+                    " كىتاپ ئىسمىنى توغۇرلاڭ ياكى سىستىمىغا كىرگۈزۈپ ئاندىن داۋاملاشتۇرۇڭ!",
+                )
 
     def message_close(self, title, text):
         close_button = QPushButton("ئىتىش")
@@ -3857,7 +4343,6 @@ class Main_window(QMainWindow, main_ui):
         msg.setIcon(QMessageBox.Warning)
         msg.addButton(close_button, QMessageBox.AcceptRole)
         msg.exec_()
-
 
     def update_lend_record(self):
         client_no = self.lineEdit_20.text()
@@ -3899,34 +4384,37 @@ class Main_window(QMainWindow, main_ui):
         if self.sale_tab_left_press_flag == "yes":
             self.sale_tab_left_press_flag = "no"
 
-
     def left_sale_tab_confirm(self, i):
-            if i.text() == "ھەئە":
-                self.left_sale_confirm = "yes"
-                self.sale_tab_left_press_flag = "yes"
-                Library_db.cur.execute("DROP TABLE IF EXISTS Library.days_record_for_view")
-                Library_db.db.commit()
-                Library_db.cur.execute("CREATE table IF NOT EXISTS Library.days_record_for_view(book_name char(255), "
-                                       "amount int, sale_price int, total_price int, book_id int AUTO_INCREMENT, "
-                                       "PRIMARY KEY(book_id))")
+        if i.text() == "ھەئە":
+            self.left_sale_confirm = "yes"
+            self.sale_tab_left_press_flag = "yes"
+            Library_db.cur.execute("DROP TABLE IF EXISTS Library.days_record_for_view")
+            Library_db.db.commit()
+            Library_db.cur.execute(
+                "CREATE table IF NOT EXISTS Library.days_record_for_view(book_name char(255), "
+                "amount int, sale_price int, total_price int, book_id int AUTO_INCREMENT, "
+                "PRIMARY KEY(book_id))"
+            )
 
-                Library_db.cur.execute("ALTER TABLE Library.days_record_for_view AUTO_INCREMENT = 1")
+            Library_db.cur.execute(
+                "ALTER TABLE Library.days_record_for_view AUTO_INCREMENT = 1"
+            )
 
-                self.tableWidget.setVisible(True)
-                self.tableWidget_10.setVisible(False)
-                self.lineEdit.clear()
-                self.lineEdit_2.clear()
-                self.lineEdit_3.clear()
-                self.lineEdit_3.setReadOnly(True)
-                self.lineEdit_4.clear()
-                self.lineEdit_4.setStyleSheet("color:black;")
-                self.lineEdit_19.clear()
-                self.lineEdit_19.setVisible(False)
-                self.label_22.setVisible(False)
-                if self.sale_tab_left_press_flag == "yes":
-                    self.sale_tab_left_press_flag = "no"
-            else:
-                self.left_sale_confirm = "no"
+            self.tableWidget.setVisible(True)
+            self.tableWidget_10.setVisible(False)
+            self.lineEdit.clear()
+            self.lineEdit_2.clear()
+            self.lineEdit_3.clear()
+            self.lineEdit_3.setReadOnly(True)
+            self.lineEdit_4.clear()
+            self.lineEdit_4.setStyleSheet("color:black;")
+            self.lineEdit_19.clear()
+            self.lineEdit_19.setVisible(False)
+            self.label_22.setVisible(False)
+            if self.sale_tab_left_press_flag == "yes":
+                self.sale_tab_left_press_flag = "no"
+        else:
+            self.left_sale_confirm = "no"
 
     def left_lend_tab(self):
         self.lend_tab_left_press_flag = "yes"
@@ -3965,7 +4453,6 @@ class Main_window(QMainWindow, main_ui):
         else:
             self.left_lend_confirm = "no"
 
-
     def clear_lend_tab(self):
         self.lend_tab_left_press_flag = "yes"
         self.lineEdit_20.clear()
@@ -3982,8 +4469,6 @@ class Main_window(QMainWindow, main_ui):
         if self.lend_tab_left_press_flag == "yes":
             self.lend_tab_left_press_flag = "no"
 
-
-
     def left_from_books_tab(self):
 
         if self.lineEdit_6.text():
@@ -3994,7 +4479,6 @@ class Main_window(QMainWindow, main_ui):
 
         if self.frame_6.isEnabled():
             self.left_from_edit_book_tab()
-
 
     def left_from_search_book_tab(self):
         self.lineEdit_6.clear()

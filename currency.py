@@ -21,3 +21,22 @@ class convert_currency:
         two = self.currency[two]
         result = (two * amount_one) / one
         return round(result, 4)
+
+
+# def make_list():
+#     all_data = OpenExchangeRates(api_key="641cfcb7ee9c49848d26607c341f8d59")
+#     dict_data = (all_data.latest()).dict
+#     return dict_data
+
+
+# currencys = make_list()
+
+
+# def convert_currency(first_brim, amount, seccond_brim):
+#     list_of_contry_names = currencys.keys()
+#     list_of_values = currencys.values()
+
+#     one = currencys[first_brim]
+#     two = currencys[seccond_brim]
+#     result = (two * amount) / one
+#     return round(result, 4)

@@ -45,7 +45,7 @@ class login(QWidget, ui):
         self.pushButton_6.setIconSize(QSize(25, 25))
         self.pushButton_6.clicked.connect(self.lang_chang)
 
-        self.main = Main_window()
+        self.Main_window = Main_window
 
     def super_user_login(self):
         if self.checkBox_2.isChecked():
@@ -79,7 +79,7 @@ class login(QWidget, ui):
                     elif re[0][1] == pass_word:
                         self.close()
                         time.sleep(0.3)
-                        self.main.show()
+                        self.Main_window().show()
 
                         Library_db.cur.execute("SELECT * FROM Library.current_user")
                         result = Library_db.cur.fetchall()
@@ -161,7 +161,7 @@ class login(QWidget, ui):
 
                             self.close()
                             time.sleep(0.3)
-                            self.main.show()
+                            self.Main_window().show()
 
                             Library_db.cur.execute("SELECT * FROM Library.current_user")
                             result = Library_db.cur.fetchall()
