@@ -1,0 +1,29 @@
+<RCC>
+  <qresource prefix="login">
+    <file>icons/langUY-icon-white.svg</file>
+    <file>icons/langEN-icon-black.svg</file>
+    <file>icons/langUY-icon-black.svg</file>
+    <file>icons/langEN-icon-white.svg</file>
+    <file>icons/login-theme-black.svg</file>
+    <file>icons/login-theme-white.svg</file>
+    <file>icons/Password-black.svg</file>
+    <file>icons/Password-hide-black.svg</file>
+    <file>icons/password-hide-white.svg</file>
+    <file>icons/Password-show-black.svg</file>
+    <file>icons/password-show-white.svg</file>
+    <file>icons/Password-white.svg</file>
+    <file>icons/user-icon-black.svg</file>
+    <file>icons/User-white.svg</file>
+  </qresource>
+  <qresource prefix="icon for main ui">
+    <file>icons/user_swich.svg</file>
+    <file>icons/exchange.svg</file>
+    <file>icons/exit_app.svg</file>
+    <file>icons/sale-or-rent.svg</file>
+    <file>icons/client.svg</file>
+    <file>icons/themes.svg</file>
+    <file>icons/manage-books.svg</file>
+    <file>icons/users.svg</file>
+    <file>icons/settings.svg</file>
+  </qresource>
+</RCC>
